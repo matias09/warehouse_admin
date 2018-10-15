@@ -1,0 +1,13 @@
+bin/
+obj/
+*.html
+*.vbproj
+*.sln
+Backup/
+profeExampleDataSet.Designer.vb
+*.suo
+*.v11
+*.htm
+My Project/
+*.vbproj
+*.vbproj*
