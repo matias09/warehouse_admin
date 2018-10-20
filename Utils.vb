@@ -10,8 +10,8 @@ Public Class Utils
       Types.Show()
       Types.Focus()
     ElseIf (toForm = "Sector") Then
-      'Sector.Show()
-      'Sector.Focus()
+      Sector.Show()
+      Sector.Focus()
     ElseIf (toForm = "") Then
       '.Show()
       '.Focus()
