@@ -4,7 +4,6 @@
 
 
   Private Sub DEBUG_DisableSomeButtons()
-    btn_products.Enabled = False
     btn_mov_updates.Enabled = False
   End Sub
 
@@ -29,9 +28,9 @@
     Me.DestroyHandle()
   End Sub
 
-  'Private Sub BtnProducts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_products.Click
-  '    _mUtils.ChangeFocusForm(Me, "Productos")
-  'End Sub
+  Private Sub BtnProducts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_products.Click
+    _mUtils.ChangeFocusForm(Me, "Product")
+  End Sub
 
   Private Sub btnTypes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_types.Click
     _mUtils.ChangeFocusForm(Me, "Types")

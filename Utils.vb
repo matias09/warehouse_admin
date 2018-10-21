@@ -3,9 +3,9 @@
 Public Class Utils
   Public Sub ChangeFocusForm(ByRef actualForm As Form, ByVal toForm As String)
     actualForm.Hide()
-    If (toForm = "Products") Then
-      'Products.Show()
-      'Products.Focus()
+    If (toForm = "Product") Then
+      Product.Show()
+      Product.Focus()
     ElseIf (toForm = "Types") Then
       Types.Show()
       Types.Focus()
