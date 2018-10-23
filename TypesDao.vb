@@ -27,26 +27,12 @@
     fieldsList = New Hashtable()
     dataBaseManager = dataBaseManager.GetInstance()
 
+    fieldsList.Add("id", 0)
     fieldsList.Add("typ_name", "")
     fieldsList.Add("codint", "")
 
     dataBaseManager.PrepareDao(TABLE_NAME, da, cb, dt)
     FillRecordList()
-  End Sub
-
-  Private Sub FillRecordList()
-    Dim rowsCount As Integer = 0
-    Dim i As Integer = 0
-
-    rowsCount = dt.Rows.Count
-    While i < rowsCount
-      fieldsList = New Hashtable()
-      dr = dt.Rows(i)
-      fieldsList("typ_name") = dr("typ_name")
-      fieldsList("codint") = dr("codint")
-      recordList.Add(fieldsList)
-      i += 1
-    End While
   End Sub
 
   Public Sub EraseRecord()
@@ -92,6 +78,22 @@
   End Sub
 
   ' Privates
+  Private Sub FillRecordList()
+    Dim rowsCount As Integer = 0
+    Dim i As Integer = 0
+
+    rowsCount = dt.Rows.Count
+    While i < rowsCount
+      fieldsList = New Hashtable()
+      dr = dt.Rows(i)
+      fieldsList("id") = dr("id")
+      fieldsList("typ_name") = dr("typ_name")
+      fieldsList("codint") = dr("codint")
+      recordList.Add(fieldsList)
+      i += 1
+    End While
+  End Sub
+
   Private Sub SaveDataInRecord()
     Dim i As Integer = 0
     Dim fieldsCount As Integer = 0

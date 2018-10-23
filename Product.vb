@@ -9,8 +9,13 @@
 
   Private _mProductsRecordList As ArrayList
   Private _mProductsDao As ProductsDao
-  Private _mUtils As Utils
   Private _mActProductsRegPos As Integer
+
+  Private _mTypesRecordList As ArrayList
+  Private _mTypesDao As TypesDao
+  Private _mActTypesRegPos As Integer
+
+  Private _mUtils As Utils
   Private _mStateValue As Char
 
   Private Sub SwitchOnOffTypeControls(ByVal state As Boolean)
@@ -64,12 +69,26 @@
     rad_state_b.Enabled = state
   End Sub
 
+  Private Sub FillTypesDropDownMenu()
+    Dim recordsCount As Integer = 0
+
+    recordsCount = _mTypesRecordList.Count
+
+    If recordsCount <> 0 Then
+      Dim i As Integer = 0
+      While i < recordsCount
+        drp_types.Items.Add(_mTypesRecordList.Item(i)("typ_name"))
+        i += 1
+      End While
+      drp_types.SelectedIndex = _mActTypesRegPos
+    Else
+      drp_types.Enabled = False
+    End If
+  End Sub
+
   Private Sub UpdateControls()
     _mUtils.ResetControls(Me)
     ResetErrorLabel()
-
-    'Console.WriteLine(" UpdateControls : _mActProductsRegPos : " & _mActProductsRegPos)
-    'Console.WriteLine(" UpdateControls : _mProductsRecordList.Count : " & _mProductsRecordList.Count)
 
     If (_mProductsRecordList.Count <> 0) Then
       If (IsDBNull(_mProductsRecordList.Item(_mActProductsRegPos)("pro_name")) <> True) Then
@@ -84,6 +103,8 @@
         Else
           rad_state_b.Checked = True
         End If
+
+        'lab_type_value.Text = drp_types.SelectedValue
 
         SwitchOnOffInputControls(True)
         SwitchOnOffControlDataButtons(True)
@@ -123,6 +144,7 @@
     Dim fields As Hashtable = New Hashtable()
 
     fields("pro_name") = txt_name.Text
+    fields("id_type") = drp_types.SelectedIndex
     fields("stock") = txt_stock.Text
     fields("state") = _mStateValue
 
@@ -172,11 +194,18 @@
   Private Sub Products_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
     'Console.WriteLine("Inside of Products Form")
     _mProductsDao = ProductsDao.GetInstance()
-    _mUtils = New Utils()
     _mProductsRecordList = _mProductsDao.GetRecords()
     _mActProductsRegPos = _mProductsDao.GetRegisterPos()
 
+    _mTypesDao = TypesDao.GetInstance()
+    _mTypesRecordList = _mTypesDao.GetRecords()
+    _mActTypesRegPos = _mTypesDao.GetRegisterPos()
+
+    _mUtils = New Utils()
+
     ResetErrorLabel()
+    FillTypesDropDownMenu()
+
     UpdateControls()
     UpdateProductsMenu()
   End Sub

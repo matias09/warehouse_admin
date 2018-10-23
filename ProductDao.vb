@@ -28,6 +28,7 @@
     dataBaseManager = dataBaseManager.GetInstance()
 
     fieldsList.Add("pro_name", "")
+    fieldsList.Add("id_type", "")
     fieldsList.Add("stock", "")
     fieldsList.Add("state", "")
 
@@ -44,6 +45,7 @@
       fieldsList = New Hashtable()
       dr = dt.Rows(i)
       fieldsList("pro_name") = dr("pro_name")
+      fieldsList("id_type") = dr("id_type")
       fieldsList("stock") = dr("stock")
       fieldsList("state") = dr("state")
       recordList.Add(fieldsList)
