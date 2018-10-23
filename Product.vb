@@ -11,6 +11,7 @@
   Private _mProductsDao As ProductsDao
   Private _mActProductsRegPos As Integer
 
+  Private _mTypesValues As Dictionary(Of Integer, String)
   Private _mTypesRecordList As ArrayList
   Private _mTypesDao As TypesDao
   Private _mActTypesRegPos As Integer
@@ -77,9 +78,15 @@
     If recordsCount <> 0 Then
       Dim i As Integer = 0
       While i < recordsCount
+        If (_mTypesValues.ContainsKey(_mTypesRecordList.Item(i)("id")) = False) Then
+          _mTypesValues.Add(_mTypesRecordList.Item(i)("id"), _mTypesRecordList.Item(i)("typ_name"))
+        End If
+
         drp_types.Items.Add(_mTypesRecordList.Item(i)("typ_name"))
         i += 1
       End While
+
+      Console.WriteLine("Product::FillTypesDropDownMenu - Filltype reg pos : " & _mActTypesRegPos)
       drp_types.SelectedIndex = _mActTypesRegPos
     Else
       drp_types.Enabled = False
@@ -92,8 +99,6 @@
 
     If (_mProductsRecordList.Count <> 0) Then
       If (IsDBNull(_mProductsRecordList.Item(_mActProductsRegPos)("pro_name")) <> True) Then
-        lab_type_value.Text = _mProductsRecordList.Item(_mActProductsRegPos)("id_type")
-
         txt_name.Text = _mProductsRecordList.Item(_mActProductsRegPos)("pro_name")
         txt_stock.Text = _mProductsRecordList.Item(_mActProductsRegPos)("stock")
 
@@ -104,12 +109,12 @@
           rad_state_b.Checked = True
         End If
 
-        'lab_type_value.Text = drp_types.SelectedValue
+        lab_type_value.Text = _mTypesValues(_mProductsRecordList.Item(_mActProductsRegPos)("id_type"))
 
         SwitchOnOffInputControls(True)
         SwitchOnOffControlDataButtons(True)
       Else
-        lab_type_value.Text = 0
+        lab_type_value.Text = ""
         SwitchOnOffControlDataButtons(False)
         SwitchOnOffInputControls(False)
       End If
@@ -144,7 +149,7 @@
     Dim fields As Hashtable = New Hashtable()
 
     fields("pro_name") = txt_name.Text
-    fields("id_type") = drp_types.SelectedIndex
+    fields("id_type") = _mTypesRecordList(_mActTypesRegPos)("id")
     fields("stock") = txt_stock.Text
     fields("state") = _mStateValue
 
@@ -198,6 +203,7 @@
     _mActProductsRegPos = _mProductsDao.GetRegisterPos()
 
     _mTypesDao = TypesDao.GetInstance()
+    _mTypesValues = New Dictionary(Of Integer, String)
     _mTypesRecordList = _mTypesDao.GetRecords()
     _mActTypesRegPos = _mTypesDao.GetRegisterPos()
 
@@ -214,6 +220,10 @@
     _mProductsDao.SetRegisterPos(drp_products.SelectedIndex)
     _mActProductsRegPos = drp_products.SelectedIndex
     UpdateControls()
+  End Sub
+
+  Private Sub drp_types_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles drp_types.SelectedIndexChanged
+    _mActTypesRegPos = drp_types.SelectedIndex
   End Sub
 
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
@@ -275,7 +285,7 @@
     SwitchOnOffControlDataButtons(False)
 
     ' focus on the first Text Box
-    txt_name.focus()
+    txt_name.Focus()
   End Sub
 
   Private Sub btn_delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_delete.Click

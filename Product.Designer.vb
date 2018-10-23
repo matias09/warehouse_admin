@@ -251,7 +251,6 @@ Partial Class Product
     Me.lab_type_value.Name = "lab_type_value"
     Me.lab_type_value.Size = New System.Drawing.Size(0, 13)
     Me.lab_type_value.TabIndex = 114
-    Me.lab_type_value.Visible = False
     '
     'Product
     '
