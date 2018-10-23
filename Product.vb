@@ -86,7 +86,8 @@
         i += 1
       End While
 
-      Console.WriteLine("Product::FillTypesDropDownMenu - Filltype reg pos : " & _mActTypesRegPos)
+
+      'Console.WriteLine("Product::FillTypesDropDownMenu - Filltype reg pos : " & _mActTypesRegPos)
       drp_types.SelectedIndex = _mActTypesRegPos
     Else
       drp_types.Enabled = False
@@ -148,8 +149,11 @@
   Private Sub AddNewRecordToRecordList()
     Dim fields As Hashtable = New Hashtable()
 
+    'Console.WriteLine(" Ids " & _mTypesValues.Keys().Count)
+    'Console.WriteLine(" Id from element selected : " & _mTypesValues.Keys(drp_types.SelectedIndex))
+
     fields("pro_name") = txt_name.Text
-    fields("id_type") = _mTypesRecordList(_mActTypesRegPos)("id")
+    fields("id_type") = _mTypesValues.Keys(drp_types.SelectedIndex)
     fields("stock") = txt_stock.Text
     fields("state") = _mStateValue
 
