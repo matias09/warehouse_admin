@@ -2,7 +2,7 @@
   Inherits System.Windows.Forms.Form
 
   Const STATE_AVAILABLE As Char = "A"
-  Const STATE_DISAVAILABLE As Char = "B"
+  Const STATE_DISABLE As Char = "B"
 
   Const TYPE_TITLE_LABEL_TEXT_ON_IDLE_STATE As String = "Tipo:"
   Const TYPE_TITLE_LABEL_TEXT_ON_NEW_STATE As String = "Elegir Tipo:"
@@ -17,7 +17,8 @@
   Private _mActTypesRegPos As Integer
 
   Private _mUtils As Utils
-  Private _mStateValue As Char
+  Private _mState As Char
+  Private _mStock As Integer
 
   Private Sub SwitchOnOffTypeControls(ByVal state As Boolean)
     If (state = True) Then
@@ -65,9 +66,20 @@
 
   Private Sub SwitchOnOffInputControls(ByVal state As Boolean)
     txt_name.Enabled = state
-    txt_stock.Enabled = state
-    rad_state_a.Enabled = state
-    rad_state_b.Enabled = state
+
+    If (state = True And rad_state_b.Checked = False) Then
+      txt_stock.Enabled = True
+    Else
+      txt_stock.Enabled = False
+    End If
+
+    If (state = True And _mStock = 0) Then
+      rad_state_a.Enabled = True
+      rad_state_b.Enabled = True
+    Else
+      rad_state_a.Enabled = False
+      rad_state_b.Enabled = False
+    End If
   End Sub
 
   Private Sub FillTypesDropDownMenu()
@@ -94,6 +106,14 @@
     End If
   End Sub
 
+  Private Sub UpdateObjectState()
+    If (rad_state_a.Checked = True) Then
+      _mState = STATE_AVAILABLE
+    Else
+      _mState = STATE_DISABLE
+    End If
+  End Sub
+
   Private Sub UpdateControls()
     _mUtils.ResetControls(Me)
     ResetErrorLabel()
@@ -101,10 +121,12 @@
     If (_mProductsRecordList.Count <> 0) Then
       If (IsDBNull(_mProductsRecordList.Item(_mActProductsRegPos)("pro_name")) <> True) Then
         txt_name.Text = _mProductsRecordList.Item(_mActProductsRegPos)("pro_name")
-        txt_stock.Text = _mProductsRecordList.Item(_mActProductsRegPos)("stock")
 
-        _mStateValue = _mProductsRecordList.Item(_mActProductsRegPos)("state")
-        If (_mStateValue = STATE_AVAILABLE) Then
+        _mStock = _mProductsRecordList.Item(_mActProductsRegPos)("stock")
+        txt_stock.Text = _mStock
+
+        _mState = _mProductsRecordList.Item(_mActProductsRegPos)("state")
+        If (_mState = STATE_AVAILABLE) Then
           rad_state_a.Checked = True
         Else
           rad_state_b.Checked = True
@@ -114,11 +136,11 @@
 
         SwitchOnOffInputControls(True)
         SwitchOnOffControlDataButtons(True)
-      Else
-        lab_type_value.Text = ""
-        SwitchOnOffControlDataButtons(False)
-        SwitchOnOffInputControls(False)
       End If
+    Else
+      lab_type_value.Text = ""
+      SwitchOnOffControlDataButtons(False)
+      SwitchOnOffInputControls(False)
     End If
   End Sub
 
@@ -143,7 +165,7 @@
   Private Sub UpdateRecordListData()
     _mProductsRecordList(_mActProductsRegPos)("pro_name") = txt_name.Text
     _mProductsRecordList(_mActProductsRegPos)("stock") = txt_stock.Text
-    _mProductsRecordList(_mActProductsRegPos)("state") = _mStateValue
+    _mProductsRecordList(_mActProductsRegPos)("state") = _mState
   End Sub
 
   Private Sub AddNewRecordToRecordList()
@@ -155,7 +177,7 @@
     fields("pro_name") = txt_name.Text
     fields("id_type") = _mTypesValues.Keys(drp_types.SelectedIndex)
     fields("stock") = txt_stock.Text
-    fields("state") = _mStateValue
+    fields("state") = _mState
 
     _mProductsRecordList.Add(fields)
   End Sub
@@ -170,34 +192,29 @@
   End Sub
 
   Private Function ValidateInputs() As Boolean
-    Dim valid As Boolean = True
     ''Console.WriteLine("------ Products: Inside ValidateInputs() ------")
     If _mUtils.CheckExpressionByPatternMatching(txt_name.Text, "^[a-zA-Z]+$") = False Then
-      'Console.WriteLine("------ Products: Inside ValidateInputs() -> IF 1 ------")
+      Console.WriteLine("------ Products: Inside ValidateInputs() -> IF 1 ------")
       ShowErrorLabel("Error: Nombre Invalido")
-      valid = False
+      Return False
     End If
 
-    If _mUtils.CheckExpressionByPatternMatching(txt_stock.Text, "^([0-9]+|[0-9]\.[0-9]+)$") = False Then
-      'Console.WriteLine("------ Products: Inside ValidateInputs() -> IF 2 ------")
-      lab_error_msg.Text = "Error: Stock Invalido"
-
-      ' TODO: Testing regex
-      'valid = False
+    If _mUtils.CheckExpressionByPatternMatching(txt_stock.Text, "^[0-9]+$") = False Then
+      Console.WriteLine("------ Products: Inside ValidateInputs() -> IF 2 ------")
+      ShowErrorLabel("Error: Stock Invalido")
+      Return False
     End If
 
-    ' checks which state radio button is selected
-    If (rad_state_a.Checked = True) Then
-      _mStateValue = STATE_AVAILABLE
-    ElseIf (rad_state_b.Checked = True) Then
-      _mStateValue = STATE_DISAVAILABLE
-    Else
-      'Console.WriteLine("------ Products: Inside ValidateInputs() -> IF 3 ------")
-      lab_error_msg.Text = "Error: State Empty"
-    End If
-
-    Return valid
+    Return True
   End Function
+
+  Private Sub CustomResetControls()
+    drp_types.SelectedIndex = 0
+    txt_name.Text = ""
+    txt_stock.Text = 0
+    rad_state_a.Checked = True
+    rad_state_b.Checked = False
+  End Sub
 
   '/-------------------------- EventHandlers Methods --------------------------/
   Private Sub Products_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -245,6 +262,7 @@
   Private Sub btn_update_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_update.Click
     If ValidateInputs() = True Then
       ResetErrorLabel()
+      UpdateObjectState()
 
       UpdateRecordListData()
       _mProductsDao.SetRecordList(_mProductsRecordList)
@@ -254,12 +272,15 @@
 
       ' Back To Normal Menu Behavior
       SwitchOnOffControlDataButtons(True)
+
+      UpdateControls()
     End If
   End Sub
 
   Private Sub btn_save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_save.Click
     If ValidateInputs() = True Then
       ResetErrorLabel()
+      UpdateObjectState()
 
       AddNewRecordToRecordList()
       _mProductsDao.SetRecordList(_mProductsRecordList)
@@ -270,9 +291,9 @@
       ' Back To Normal Menu Behavior
       SwitchOnOffControlSaveButtons(False)
       SwitchOnOffTypeControls(False)
-    End If
 
-    UpdateControls()
+      UpdateControls()
+    End If
   End Sub
 
   Private Sub btn_cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_cancel.Click
@@ -282,14 +303,14 @@
   End Sub
 
   Private Sub btn_new_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_new.Click
-    _mUtils.ResetControls(Me)
+    CustomResetControls()
     SwitchOnOffControlSaveButtons(True)
     SwitchOnOffInputControls(True)
     SwitchOnOffTypeControls(True)
     SwitchOnOffControlDataButtons(False)
 
-    ' focus on the first Text Box
-    txt_name.Focus()
+    ' focus on the types product menu
+    drp_types.Focus()
   End Sub
 
   Private Sub btn_delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_delete.Click
@@ -299,7 +320,7 @@
     drp_products.Items.RemoveAt(_mActProductsRegPos)
     _mProductsDao.EraseRecord()
 
-    If _mActProductsRegPos = _mProductsRecordList.Count Then
+    If _mActProductsRegPos <> 0 Then
       _mActProductsRegPos -= 1
     End If
 
@@ -325,5 +346,15 @@
 
     _mActProductsRegPos = _mUtils.UpdateRegisterPos(futRegPos, eleRecordsCount)
     drp_products.SelectedIndex = _mActProductsRegPos
+  End Sub
+
+  Private Sub rad_state_b_CheckedChanged(sender As Object, e As EventArgs) Handles rad_state_b.CheckedChanged
+    If rad_state_b.Checked = True Then
+      _mStock = 0
+      txt_stock.Text = 0
+      txt_stock.Enabled = False
+    Else
+      txt_stock.Enabled = True
+    End If
   End Sub
 End Class

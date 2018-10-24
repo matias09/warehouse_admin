@@ -188,6 +188,7 @@ Partial Class Product
     'rad_state_a
     '
     Me.rad_state_a.AutoSize = True
+    Me.rad_state_a.Checked = True
     Me.rad_state_a.Location = New System.Drawing.Point(95, 115)
     Me.rad_state_a.Name = "rad_state_a"
     Me.rad_state_a.Size = New System.Drawing.Size(32, 17)
