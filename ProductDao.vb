@@ -1,9 +1,9 @@
-﻿Public NotInheritable Class TypesDao
-  Const TABLE_NAME As String = "types"
+﻿Public NotInheritable Class ProductsDao
+  Const TABLE_NAME As String = "products"
   Private recordList As ArrayList
   Private fieldsList As Hashtable
   Private dataBaseManager As DataBaseManager
-  Private Shared typSingleton As TypesDao = Nothing
+  Private Shared proSingleton As ProductsDao = Nothing
 
   Dim da As OleDb.OleDbDataAdapter
   Dim cb As OleDb.OleDbCommandBuilder
@@ -14,11 +14,11 @@
 
   Public Shared ReadOnly Property GetInstance()
     Get
-      If (typSingleton Is Nothing) Then
-        typSingleton = New TypesDao()
+      If (proSingleton Is Nothing) Then
+        proSingleton = New ProductsDao()
       End If
 
-      Return typSingleton
+      Return proSingleton
     End Get
   End Property
 
@@ -27,12 +27,30 @@
     fieldsList = New Hashtable()
     dataBaseManager = dataBaseManager.GetInstance()
 
-    fieldsList.Add("id", 0)
-    fieldsList.Add("typ_name", "")
-    fieldsList.Add("codint", "")
+    fieldsList.Add("pro_name", "")
+    fieldsList.Add("id_type", "")
+    fieldsList.Add("stock", "")
+    fieldsList.Add("state", "")
 
     dataBaseManager.PrepareDao(TABLE_NAME, da, cb, dt)
     FillRecordList()
+  End Sub
+
+  Private Sub FillRecordList()
+    Dim rowsCount As Integer = 0
+    Dim i As Integer = 0
+
+    rowsCount = dt.Rows.Count
+    While i < rowsCount
+      fieldsList = New Hashtable()
+      dr = dt.Rows(i)
+      fieldsList("pro_name") = dr("pro_name")
+      fieldsList("id_type") = dr("id_type")
+      fieldsList("stock") = dr("stock")
+      fieldsList("state") = dr("state")
+      recordList.Add(fieldsList)
+      i += 1
+    End While
   End Sub
 
   Public Sub EraseRecord()
@@ -78,22 +96,6 @@
   End Sub
 
   ' Privates
-  Private Sub FillRecordList()
-    Dim rowsCount As Integer = 0
-    Dim i As Integer = 0
-
-    rowsCount = dt.Rows.Count
-    While i < rowsCount
-      fieldsList = New Hashtable()
-      dr = dt.Rows(i)
-      fieldsList("id") = dr("id")
-      fieldsList("typ_name") = dr("typ_name")
-      fieldsList("codint") = dr("codint")
-      recordList.Add(fieldsList)
-      i += 1
-    End While
-  End Sub
-
   Private Sub SaveDataInRecord()
     Dim i As Integer = 0
     Dim fieldsCount As Integer = 0
