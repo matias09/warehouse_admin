@@ -22,12 +22,12 @@ Partial Class Product
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+    Me.components = New System.ComponentModel.Container()
     Me.lab_error_msg = New System.Windows.Forms.Label()
     Me.txt_stock = New System.Windows.Forms.TextBox()
     Me.Label3 = New System.Windows.Forms.Label()
     Me.txt_name = New System.Windows.Forms.TextBox()
     Me.Label1 = New System.Windows.Forms.Label()
-    Me.btn_clean = New System.Windows.Forms.Button()
     Me.btn_delete = New System.Windows.Forms.Button()
     Me.btn_update = New System.Windows.Forms.Button()
     Me.btn_new = New System.Windows.Forms.Button()
@@ -44,6 +44,14 @@ Partial Class Product
     Me.drp_types = New System.Windows.Forms.ComboBox()
     Me.lab_type_title = New System.Windows.Forms.Label()
     Me.lab_type_value = New System.Windows.Forms.Label()
+    Me.dat_stock = New System.Windows.Forms.DataGridView()
+    Me.sector = New System.Windows.Forms.DataGridViewTextBoxColumn()
+    Me.hall = New System.Windows.Forms.DataGridViewTextBoxColumn()
+    Me.stock = New System.Windows.Forms.DataGridViewTextBoxColumn()
+    Me.btn_stock = New System.Windows.Forms.Button()
+    Me.ProductBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+    CType(Me.dat_stock, System.ComponentModel.ISupportInitialize).BeginInit()
+    CType(Me.ProductBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.SuspendLayout()
     '
     'lab_error_msg
@@ -62,7 +70,7 @@ Partial Class Product
     Me.txt_stock.Location = New System.Drawing.Point(95, 89)
     Me.txt_stock.MaxLength = 10
     Me.txt_stock.Name = "txt_stock"
-    Me.txt_stock.Size = New System.Drawing.Size(42, 20)
+    Me.txt_stock.Size = New System.Drawing.Size(178, 20)
     Me.txt_stock.TabIndex = 12
     '
     'Label3
@@ -79,7 +87,7 @@ Partial Class Product
     Me.txt_name.Location = New System.Drawing.Point(95, 63)
     Me.txt_name.MaxLength = 90
     Me.txt_name.Name = "txt_name"
-    Me.txt_name.Size = New System.Drawing.Size(179, 20)
+    Me.txt_name.Size = New System.Drawing.Size(257, 20)
     Me.txt_name.TabIndex = 10
     '
     'Label1
@@ -91,17 +99,9 @@ Partial Class Product
     Me.Label1.TabIndex = 98
     Me.Label1.Text = "Nombre:"
     '
-    'btn_clean
-    '
-    Me.btn_clean.Location = New System.Drawing.Point(104, 200)
-    Me.btn_clean.Name = "btn_clean"
-    Me.btn_clean.Size = New System.Drawing.Size(75, 23)
-    Me.btn_clean.TabIndex = 24
-    Me.btn_clean.Text = "Limpiar"
-    Me.btn_clean.UseVisualStyleBackColor = True
-    '
     'btn_delete
     '
+    Me.btn_delete.Enabled = False
     Me.btn_delete.Location = New System.Drawing.Point(199, 200)
     Me.btn_delete.Name = "btn_delete"
     Me.btn_delete.Size = New System.Drawing.Size(75, 23)
@@ -129,7 +129,7 @@ Partial Class Product
     '
     'btn_exit
     '
-    Me.btn_exit.Location = New System.Drawing.Point(104, 233)
+    Me.btn_exit.Location = New System.Drawing.Point(104, 241)
     Me.btn_exit.Name = "btn_exit"
     Me.btn_exit.Size = New System.Drawing.Size(75, 23)
     Me.btn_exit.TabIndex = 102
@@ -223,7 +223,7 @@ Partial Class Product
     Me.drp_products.FormattingEnabled = True
     Me.drp_products.Location = New System.Drawing.Point(95, 6)
     Me.drp_products.Name = "drp_products"
-    Me.drp_products.Size = New System.Drawing.Size(179, 21)
+    Me.drp_products.Size = New System.Drawing.Size(257, 21)
     Me.drp_products.TabIndex = 2
     '
     'drp_types
@@ -232,7 +232,7 @@ Partial Class Product
     Me.drp_types.FormattingEnabled = True
     Me.drp_types.Location = New System.Drawing.Point(95, 33)
     Me.drp_types.Name = "drp_types"
-    Me.drp_types.Size = New System.Drawing.Size(179, 21)
+    Me.drp_types.Size = New System.Drawing.Size(257, 21)
     Me.drp_types.TabIndex = 1
     Me.drp_types.Visible = False
     '
@@ -253,11 +253,74 @@ Partial Class Product
     Me.lab_type_value.Size = New System.Drawing.Size(0, 13)
     Me.lab_type_value.TabIndex = 114
     '
+    'dat_stock
+    '
+    Me.dat_stock.AllowUserToAddRows = False
+    Me.dat_stock.AllowUserToDeleteRows = False
+    Me.dat_stock.AllowUserToResizeColumns = False
+    Me.dat_stock.AllowUserToResizeRows = False
+    Me.dat_stock.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+    Me.dat_stock.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.sector, Me.hall, Me.stock})
+    Me.dat_stock.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
+    Me.dat_stock.Enabled = False
+    Me.dat_stock.Location = New System.Drawing.Point(8, 275)
+    Me.dat_stock.Name = "dat_stock"
+    Me.dat_stock.ReadOnly = True
+    Me.dat_stock.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+    Me.dat_stock.ShowCellErrors = False
+    Me.dat_stock.ShowCellToolTips = False
+    Me.dat_stock.ShowEditingIcon = False
+    Me.dat_stock.ShowRowErrors = False
+    Me.dat_stock.Size = New System.Drawing.Size(350, 190)
+    Me.dat_stock.TabIndex = 115
+    Me.dat_stock.Visible = False
+    '
+    'sector
+    '
+    Me.sector.DataPropertyName = "string"
+    Me.sector.Frozen = True
+    Me.sector.HeaderText = "Sector"
+    Me.sector.Name = "sector"
+    Me.sector.ReadOnly = True
+    '
+    'hall
+    '
+    Me.hall.DataPropertyName = "int"
+    Me.hall.Frozen = True
+    Me.hall.HeaderText = "Pasillo"
+    Me.hall.Name = "hall"
+    Me.hall.ReadOnly = True
+    '
+    'stock
+    '
+    Me.stock.DataPropertyName = "int"
+    Me.stock.Frozen = True
+    Me.stock.HeaderText = "Stock"
+    Me.stock.Name = "stock"
+    Me.stock.ReadOnly = True
+    '
+    'btn_stock
+    '
+    Me.btn_stock.Location = New System.Drawing.Point(103, 200)
+    Me.btn_stock.Name = "btn_stock"
+    Me.btn_stock.Size = New System.Drawing.Size(75, 23)
+    Me.btn_stock.TabIndex = 35
+    Me.btn_stock.Text = "Stock"
+    Me.btn_stock.UseVisualStyleBackColor = True
+    '
+    'ProductBindingSource
+    '
+    Me.ProductBindingSource.DataSource = GetType(WindowsApplication1.Product)
+    '
     'Product
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
     Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-    Me.ClientSize = New System.Drawing.Size(284, 261)
+    Me.AutoSize = True
+    Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+    Me.ClientSize = New System.Drawing.Size(360, 469)
+    Me.Controls.Add(Me.btn_stock)
+    Me.Controls.Add(Me.dat_stock)
     Me.Controls.Add(Me.lab_type_value)
     Me.Controls.Add(Me.drp_types)
     Me.Controls.Add(Me.lab_type_title)
@@ -275,13 +338,14 @@ Partial Class Product
     Me.Controls.Add(Me.Label6)
     Me.Controls.Add(Me.txt_name)
     Me.Controls.Add(Me.Label1)
-    Me.Controls.Add(Me.btn_clean)
     Me.Controls.Add(Me.btn_delete)
     Me.Controls.Add(Me.btn_update)
     Me.Controls.Add(Me.btn_new)
     Me.Controls.Add(Me.btn_exit)
     Me.Name = "Product"
     Me.Text = "Productos"
+    CType(Me.dat_stock, System.ComponentModel.ISupportInitialize).EndInit()
+    CType(Me.ProductBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
     Me.ResumeLayout(False)
     Me.PerformLayout()
 
@@ -291,7 +355,6 @@ Partial Class Product
   Friend WithEvents Label3 As System.Windows.Forms.Label
   Friend WithEvents txt_name As System.Windows.Forms.TextBox
   Friend WithEvents Label1 As System.Windows.Forms.Label
-  Friend WithEvents btn_clean As System.Windows.Forms.Button
   Friend WithEvents btn_delete As System.Windows.Forms.Button
   Friend WithEvents btn_update As System.Windows.Forms.Button
   Friend WithEvents btn_new As System.Windows.Forms.Button
@@ -308,4 +371,10 @@ Partial Class Product
   Friend WithEvents drp_types As System.Windows.Forms.ComboBox
   Friend WithEvents lab_type_title As System.Windows.Forms.Label
   Friend WithEvents lab_type_value As System.Windows.Forms.Label
+  Friend WithEvents dat_stock As System.Windows.Forms.DataGridView
+  Friend WithEvents btn_stock As System.Windows.Forms.Button
+  Friend WithEvents sector As System.Windows.Forms.DataGridViewTextBoxColumn
+  Friend WithEvents hall As System.Windows.Forms.DataGridViewTextBoxColumn
+  Friend WithEvents stock As System.Windows.Forms.DataGridViewTextBoxColumn
+  Friend WithEvents ProductBindingSource As System.Windows.Forms.BindingSource
 End Class

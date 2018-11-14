@@ -56,7 +56,6 @@
     drp_products.Enabled = state
 
     ' Buttons Controllers
-    btn_clean.Enabled = state
     btn_next.Enabled = state
     btn_prev.Enabled = state
 
@@ -216,6 +215,12 @@
     rad_state_b.Checked = False
   End Sub
 
+  Private Sub FillStockDataById(ByRef id As Integer)
+    dat_stock.Rows.Clear()
+
+    dat_stock.Rows.Add(id, id + 1, id + 2)
+  End Sub
+
   '/-------------------------- EventHandlers Methods --------------------------/
   Private Sub Products_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
     'Console.WriteLine("Inside of Products Form")
@@ -232,6 +237,7 @@
 
     ResetErrorLabel()
     FillTypesDropDownMenu()
+    FillStockDataById(_mActProductsRegPos)
 
     UpdateControls()
     UpdateProductsMenu()
@@ -240,6 +246,7 @@
   Private Sub drp_products_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles drp_products.SelectedIndexChanged
     _mProductsDao.SetRegisterPos(drp_products.SelectedIndex)
     _mActProductsRegPos = drp_products.SelectedIndex
+    FillStockDataById(_mActProductsRegPos)
     UpdateControls()
   End Sub
 
@@ -255,8 +262,12 @@
     Form1.Focus()
   End Sub
 
-  Private Sub btn_clean_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_clean.Click
-    _mUtils.ResetControls(Me)
+  Private Sub btn_stock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_stock.Click
+    If dat_stock.Visible = False Then
+      dat_stock.Visible = True
+    Else
+      dat_stock.Visible = False
+    End If
   End Sub
 
   Private Sub btn_update_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_update.Click
@@ -357,4 +368,5 @@
       txt_stock.Enabled = True
     End If
   End Sub
+
 End Class
