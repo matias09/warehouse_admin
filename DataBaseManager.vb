@@ -47,14 +47,10 @@
   End Sub
 
 
-  Public Function ExecuteQuery(ByRef sql As String) As OleDb.OleDbDataReader
-    Dim rd As OleDb.OleDbDataReader
-
+  Public Function ExecuteQuery(ByRef sql As String, ByRef rd As OleDb.OleDbDataReader)
     cd = New OleDb.OleDbCommand(sql, dbConn)
     rd = cd.ExecuteReader()
     cd.Dispose()
-
-    Return rd
   End Function
 
   ' Public Function ExecuteQuery(ByRef sql As String, ByRef cmd As OleDb.OleDbCommand) As OleDb.OleDbDataReader

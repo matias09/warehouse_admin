@@ -110,18 +110,12 @@
     End While
   End Sub
 
-  Public Function GetDBDataOnRuntime(ByRef id As Integer) As Boolean
+  Public Sub GetById(ByRef id As Integer, ByRef rd As OleDb.OleDbDataReader)
     Dim sql As String
-    Dim rd As OleDb.OleDbDataReader
 
     sql = "select * from " & TABLE_NAME & " where id = " & id
-    rd = dataBaseManager.ExecuteQuery(sql)
+    dataBaseManager.ExecuteQuery(sql, rd)
 
     Console.WriteLine("sql : " & sql)
-    While rd.Read()
-      MsgBox(rd.Item("id") & "  -  " & rd.Item(1) & "  -  " & rd.Item(2))
-    End While
-    rd.Close()
-
-  End Function
+  End Sub
 End Class

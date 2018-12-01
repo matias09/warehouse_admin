@@ -216,16 +216,21 @@
   End Sub
 
   Private Sub FillStockDataById(ByRef id As Integer)
+    Dim rd As OleDb.OleDbDataReader = Nothing
+
     dat_stock.Rows.Clear()
 
-    dat_stock.Rows.Add(id, id + 1, id + 2)
+    _mProductsDao.GetById(id, rd)
+    While rd.Read()
+      MsgBox(rd.Item("id") & "  -  " & rd.Item(1) & "  -  " & rd.Item(2))
+    End While
+    rd.Close()
 
-    _mProductsDao.GetDBDataOnRuntime(id)
+    dat_stock.Rows.Add(id, id + 1, id + 2)
   End Sub
 
   '/-------------------------- EventHandlers Methods --------------------------/
   Private Sub Products_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-    'Console.WriteLine("Inside of Products Form")
     _mProductsDao = ProductsDao.GetInstance()
     _mProductsRecordList = _mProductsDao.GetRecords()
     _mActProductsRegPos = _mProductsDao.GetRegisterPos()
@@ -239,7 +244,6 @@
 
     ResetErrorLabel()
     FillTypesDropDownMenu()
-    'FillStockDataById(_mActProductsRegPos)
 
     UpdateControls()
     UpdateProductsMenu()
