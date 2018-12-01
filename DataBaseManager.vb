@@ -52,9 +52,6 @@
 
     cd = New OleDb.OleDbCommand(sql, dbConn)
     rd = cd.ExecuteReader()
-    While rd.Read()
-      MsgBox(rd.Item(0) & "  -  " & rd.Item(1) & "  -  " & rd.Item(2))
-    End While
     cd.Dispose()
 
     Return rd
