@@ -219,6 +219,8 @@
     dat_stock.Rows.Clear()
 
     dat_stock.Rows.Add(id, id + 1, id + 2)
+
+    _mProductsDao.GetDBDataOnRuntime(id)
   End Sub
 
   '/-------------------------- EventHandlers Methods --------------------------/
@@ -237,7 +239,7 @@
 
     ResetErrorLabel()
     FillTypesDropDownMenu()
-    FillStockDataById(_mActProductsRegPos)
+    'FillStockDataById(_mActProductsRegPos)
 
     UpdateControls()
     UpdateProductsMenu()
@@ -246,7 +248,7 @@
   Private Sub drp_products_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles drp_products.SelectedIndexChanged
     _mProductsDao.SetRegisterPos(drp_products.SelectedIndex)
     _mActProductsRegPos = drp_products.SelectedIndex
-    FillStockDataById(_mActProductsRegPos)
+    FillStockDataById(_mTypesRecordList(_mActProductsRegPos)("id"))
     UpdateControls()
   End Sub
 
