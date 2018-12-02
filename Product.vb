@@ -220,13 +220,13 @@
 
     dat_stock.Rows.Clear()
 
-    _mProductsDao.GetById(id, rd)
+    _mProductsDao.GetDistributionById(id, rd)
     While rd.Read()
-      MsgBox(rd.Item("id") & "  -  " & rd.Item(1) & "  -  " & rd.Item(2))
+      'MsgBox(rd.Item("id") & "  -  " & rd.Item(1) & "  -  " & rd.Item(2))
+      dat_stock.Rows.Add(rd.Item("sector_name"), rd.Item("sector_hall"), rd.Item("stock"))
     End While
     rd.Close()
 
-    dat_stock.Rows.Add(id, id + 1, id + 2)
   End Sub
 
   '/-------------------------- EventHandlers Methods --------------------------/

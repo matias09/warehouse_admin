@@ -11,10 +11,12 @@ select distinct p.pro_name, s.hall
   inner join sectors 	  s  on s.id = ps.id_sector
   ;
 
+-----------------------------------------------------------------------------------------------------------
 -- general
   -- reset id column
   --ALTER TABLE <table> ALTER COLUMN ID COUNTER(1, 1);
 
+-----------------------------------------------------------------------------------------------------------
 -- sectors
   --select * from sectors;
 
@@ -30,6 +32,7 @@ select distinct p.pro_name, s.hall
   );
 
 
+-----------------------------------------------------------------------------------------------------------
 -- types
   --select * from types;
 
@@ -40,6 +43,7 @@ select distinct p.pro_name, s.hall
     (null, "B", "BBBB-02/B2")
   );
 
+-----------------------------------------------------------------------------------------------------------
 -- products
   --SELECT * FROM products ;
 
@@ -57,6 +61,7 @@ select distinct p.pro_name, s.hall
   --ALTER TABLE products ALTER COLUMN ID COUNTER(1, 1)
   --DELETE FROM products WHERE id = 4 ;
 
+-----------------------------------------------------------------------------------------------------------
 -- product_sectors
   --select * from product_sectors;
 
@@ -89,4 +94,14 @@ select distinct p.pro_name, s.hall
   );
 
 
+-----------------------------------------------------------------------------------------------------------
 -- movements
+
+-----------------------------------------------------------------------------------------------------------
+-- various
+
+select s.sec_name, s.hall 
+from products p 
+inner join prod_sectors ps on p.id = ps.id_product
+inner join sectors s on s.id = ps.id_sector
+where p.id = id

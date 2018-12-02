@@ -1,5 +1,7 @@
 ﻿Public NotInheritable Class ProductsDao
   Const TABLE_NAME As String = "products"
+  Const PRODUCTS_SECTORS_TABLE_NAME As String = "prod_sectors"
+  Const SECTORS_TABLE_NAME As String = "sectors"
   Private recordList As ArrayList
   Private fieldsList As Hashtable
   Private dataBaseManager As DataBaseManager
@@ -110,10 +112,24 @@
     End While
   End Sub
 
+  Public Sub GetDistributionById(ByRef id As Integer, ByRef rd As OleDb.OleDbDataReader)
+    Dim sql As String
+
+    sql = " SELECT s.sec_name AS sector_name, s.hall AS sector_hall, ps.stock" +
+          " FROM (products p INNER JOIN prod_sectors ps ON p.id = ps.id_product)" +
+          " INNER JOIN sectors s ON (s.id = ps.id_sector)" +
+          " WHERE p.id = " & id
+    dataBaseManager.ExecuteQuery(sql, rd)
+
+    Console.WriteLine("sql : " & sql)
+  End Sub
+
   Public Sub GetById(ByRef id As Integer, ByRef rd As OleDb.OleDbDataReader)
     Dim sql As String
 
-    sql = "select * from " & TABLE_NAME & " where id = " & id
+    sql = " SELECT *" +
+          " FROM products p " +
+          " WHERE p.id = " & id
     dataBaseManager.ExecuteQuery(sql, rd)
 
     Console.WriteLine("sql : " & sql)
