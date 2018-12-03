@@ -24,7 +24,6 @@ Partial Class Product
     Private Sub InitializeComponent()
     Me.components = New System.ComponentModel.Container()
     Me.lab_error_msg = New System.Windows.Forms.Label()
-    Me.txt_stock = New System.Windows.Forms.TextBox()
     Me.Label3 = New System.Windows.Forms.Label()
     Me.txt_name = New System.Windows.Forms.TextBox()
     Me.Label1 = New System.Windows.Forms.Label()
@@ -49,6 +48,7 @@ Partial Class Product
     Me.stock = New System.Windows.Forms.DataGridViewTextBoxColumn()
     Me.btn_stock = New System.Windows.Forms.Button()
     Me.ProductBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+    Me.lab_stock = New System.Windows.Forms.Label()
     CType(Me.dat_stock, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.ProductBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.SuspendLayout()
@@ -63,15 +63,6 @@ Partial Class Product
     Me.lab_error_msg.Size = New System.Drawing.Size(89, 13)
     Me.lab_error_msg.TabIndex = 101
     Me.lab_error_msg.Text = "Error Msg . . . "
-    '
-    'txt_stock
-    '
-    Me.txt_stock.Enabled = False
-    Me.txt_stock.Location = New System.Drawing.Point(95, 89)
-    Me.txt_stock.MaxLength = 10
-    Me.txt_stock.Name = "txt_stock"
-    Me.txt_stock.Size = New System.Drawing.Size(178, 20)
-    Me.txt_stock.TabIndex = 12
     '
     'Label3
     '
@@ -302,6 +293,14 @@ Partial Class Product
     '
     Me.ProductBindingSource.DataSource = GetType(WindowsApplication1.Product)
     '
+    'lab_stock
+    '
+    Me.lab_stock.AutoSize = True
+    Me.lab_stock.Location = New System.Drawing.Point(95, 96)
+    Me.lab_stock.Name = "lab_stock"
+    Me.lab_stock.Size = New System.Drawing.Size(0, 13)
+    Me.lab_stock.TabIndex = 888
+    '
     'Product
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -309,6 +308,7 @@ Partial Class Product
     Me.AutoSize = True
     Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
     Me.ClientSize = New System.Drawing.Size(360, 469)
+    Me.Controls.Add(Me.lab_stock)
     Me.Controls.Add(Me.btn_stock)
     Me.Controls.Add(Me.dat_stock)
     Me.Controls.Add(Me.lab_type_value)
@@ -322,7 +322,6 @@ Partial Class Product
     Me.Controls.Add(Me.btn_prev)
     Me.Controls.Add(Me.btn_next)
     Me.Controls.Add(Me.lab_error_msg)
-    Me.Controls.Add(Me.txt_stock)
     Me.Controls.Add(Me.Label3)
     Me.Controls.Add(Me.drp_products)
     Me.Controls.Add(Me.Label6)
@@ -340,7 +339,6 @@ Partial Class Product
 
 End Sub
   Friend WithEvents lab_error_msg As System.Windows.Forms.Label
-  Friend WithEvents txt_stock As System.Windows.Forms.TextBox
   Friend WithEvents Label3 As System.Windows.Forms.Label
   Friend WithEvents txt_name As System.Windows.Forms.TextBox
   Friend WithEvents Label1 As System.Windows.Forms.Label
@@ -365,4 +363,5 @@ End Sub
   Friend WithEvents hall As System.Windows.Forms.DataGridViewTextBoxColumn
   Friend WithEvents stock As System.Windows.Forms.DataGridViewTextBoxColumn
   Friend WithEvents ProductBindingSource As System.Windows.Forms.BindingSource
+  Friend WithEvents lab_stock As System.Windows.Forms.Label
 End Class

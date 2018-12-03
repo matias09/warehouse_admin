@@ -122,6 +122,7 @@
 
         lab_type_value.Text = _mTypesValues(_mProductsRecordList.Item(_mActProductsRegPos)("id_type"))
 
+        FillStockDataById(_mProductsRecordList(_mActProductsRegPos)("id"))
         SwitchOnOffInputControls(True)
         SwitchOnOffControlDataButtons(True)
       End If
@@ -130,8 +131,6 @@
       SwitchOnOffControlDataButtons(False)
       SwitchOnOffInputControls(False)
     End If
-
-    FillStockDataById(_mProductsRecordList(_mActProductsRegPos)("id"))
   End Sub
 
   Private Sub UpdateProductsMenu()
@@ -154,19 +153,17 @@
 
   Private Sub UpdateRecordListData()
     _mProductsRecordList(_mActProductsRegPos)("pro_name") = txt_name.Text
-    _mProductsRecordList(_mActProductsRegPos)("stock") = txt_stock.Text
+    _mProductsRecordList(_mActProductsRegPos)("stock") = lab_stock.Text
     _mProductsRecordList(_mActProductsRegPos)("state") = _mState
   End Sub
 
   Private Sub AddNewRecordToRecordList()
     Dim fields As Hashtable = New Hashtable()
 
-    'Console.WriteLine(" Ids " & _mTypesValues.Keys().Count)
-    'Console.WriteLine(" Id from element selected : " & _mTypesValues.Keys(drp_types.SelectedIndex))
-
+    fields("id") = 0
     fields("pro_name") = txt_name.Text
     fields("id_type") = _mTypesValues.Keys(drp_types.SelectedIndex)
-    fields("stock") = txt_stock.Text
+    fields("stock") = lab_stock.Text
     fields("state") = _mState
 
     _mProductsRecordList.Add(fields)
@@ -189,19 +186,19 @@
       Return False
     End If
 
-    If _mUtils.CheckExpressionByPatternMatching(txt_stock.Text, "^[0-9]+$") = False Then
-      Console.WriteLine("------ Products: Inside ValidateInputs() -> IF 2 ------")
-      ShowErrorLabel("Error: Stock Invalido")
-      Return False
-    End If
+'    If _mUtils.CheckExpressionByPatternMatching(txt_stock.Text, "^[0-9]+$") = False Then
+'      Console.WriteLine("------ Products: Inside ValidateInputs() -> IF 2 ------")
+'      ShowErrorLabel("Error: Stock Invalido")
+'      Return False
+'    End If
 
     Return True
   End Function
 
   Private Sub CustomResetControls()
     drp_types.SelectedIndex = 0
+    lab_stock.Text = 0
     txt_name.Text = ""
-    txt_stock.Text = 0
     rad_state_a.Checked = True
     rad_state_b.Checked = False
   End Sub
@@ -219,7 +216,7 @@
     End While
     rd.Close()
 
-    txt_stock.Text = _mStock
+    lab_stock.Text = _mStock
   End Sub
 
   '/-------------------------- EventHandlers Methods --------------------------/
@@ -339,16 +336,6 @@
     futRegPos = _mActProductsRegPos - 1
     _mActProductsRegPos = _mUtils.UpdateRegisterPos(futRegPos, eleRecordsCount)
     drp_products.SelectedIndex = _mActProductsRegPos
-  End Sub
-
-  Private Sub rad_state_b_CheckedChanged(sender As Object, e As EventArgs) Handles rad_state_b.CheckedChanged
-    If rad_state_b.Checked = True Then
-      _mStock = 0
-      txt_stock.Text = 0
-      txt_stock.Enabled = False
-    Else
-      txt_stock.Enabled = True
-    End If
   End Sub
 
 End Class

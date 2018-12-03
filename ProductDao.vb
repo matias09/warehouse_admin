@@ -61,7 +61,7 @@
   End Sub
 
   Public Sub SaveRecord(ByVal isNewRecord As Boolean)
-    Console.WriteLine(" Save Record : register pos : " & registerPos)
+'    Console.WriteLine(" Save Record : register pos : " & registerPos)
 
     If isNewRecord = True Then
       dr = dt.NewRow()
@@ -69,7 +69,7 @@
       registerPos = dt.Rows.Count - 1
     End If
 
-    Console.WriteLine(" Save Record 2 : register pos : " & registerPos)
+' Console.WriteLine(" Save Record 2 : register pos : " & registerPos)
 
     dr = dt.Rows(registerPos)
     SaveDataInRecord()
