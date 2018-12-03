@@ -46,6 +46,7 @@
     While i < rowsCount
       fieldsList = New Hashtable()
       dr = dt.Rows(i)
+      fieldsList("id") = dr("id")
       fieldsList("pro_name") = dr("pro_name")
       fieldsList("id_type") = dr("id_type")
       fieldsList("stock") = dr("stock")

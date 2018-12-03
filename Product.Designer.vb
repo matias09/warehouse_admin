@@ -28,7 +28,6 @@ Partial Class Product
     Me.Label3 = New System.Windows.Forms.Label()
     Me.txt_name = New System.Windows.Forms.TextBox()
     Me.Label1 = New System.Windows.Forms.Label()
-    Me.btn_delete = New System.Windows.Forms.Button()
     Me.btn_update = New System.Windows.Forms.Button()
     Me.btn_new = New System.Windows.Forms.Button()
     Me.btn_exit = New System.Windows.Forms.Button()
@@ -67,6 +66,7 @@ Partial Class Product
     '
     'txt_stock
     '
+    Me.txt_stock.Enabled = False
     Me.txt_stock.Location = New System.Drawing.Point(95, 89)
     Me.txt_stock.MaxLength = 10
     Me.txt_stock.Name = "txt_stock"
@@ -99,16 +99,6 @@ Partial Class Product
     Me.Label1.TabIndex = 98
     Me.Label1.Text = "Nombre:"
     '
-    'btn_delete
-    '
-    Me.btn_delete.Enabled = False
-    Me.btn_delete.Location = New System.Drawing.Point(199, 200)
-    Me.btn_delete.Name = "btn_delete"
-    Me.btn_delete.Size = New System.Drawing.Size(75, 23)
-    Me.btn_delete.TabIndex = 25
-    Me.btn_delete.Text = "Eliminar"
-    Me.btn_delete.UseVisualStyleBackColor = True
-    '
     'btn_update
     '
     Me.btn_update.Location = New System.Drawing.Point(10, 200)
@@ -129,7 +119,7 @@ Partial Class Product
     '
     'btn_exit
     '
-    Me.btn_exit.Location = New System.Drawing.Point(104, 241)
+    Me.btn_exit.Location = New System.Drawing.Point(199, 200)
     Me.btn_exit.Name = "btn_exit"
     Me.btn_exit.Size = New System.Drawing.Size(75, 23)
     Me.btn_exit.TabIndex = 102
@@ -301,7 +291,7 @@ Partial Class Product
     '
     'btn_stock
     '
-    Me.btn_stock.Location = New System.Drawing.Point(103, 200)
+    Me.btn_stock.Location = New System.Drawing.Point(8, 246)
     Me.btn_stock.Name = "btn_stock"
     Me.btn_stock.Size = New System.Drawing.Size(75, 23)
     Me.btn_stock.TabIndex = 35
@@ -338,7 +328,6 @@ Partial Class Product
     Me.Controls.Add(Me.Label6)
     Me.Controls.Add(Me.txt_name)
     Me.Controls.Add(Me.Label1)
-    Me.Controls.Add(Me.btn_delete)
     Me.Controls.Add(Me.btn_update)
     Me.Controls.Add(Me.btn_new)
     Me.Controls.Add(Me.btn_exit)
@@ -349,13 +338,12 @@ Partial Class Product
     Me.ResumeLayout(False)
     Me.PerformLayout()
 
-  End Sub
+End Sub
   Friend WithEvents lab_error_msg As System.Windows.Forms.Label
   Friend WithEvents txt_stock As System.Windows.Forms.TextBox
   Friend WithEvents Label3 As System.Windows.Forms.Label
   Friend WithEvents txt_name As System.Windows.Forms.TextBox
   Friend WithEvents Label1 As System.Windows.Forms.Label
-  Friend WithEvents btn_delete As System.Windows.Forms.Button
   Friend WithEvents btn_update As System.Windows.Forms.Button
   Friend WithEvents btn_new As System.Windows.Forms.Button
   Friend WithEvents btn_exit As System.Windows.Forms.Button

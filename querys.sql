@@ -10,6 +10,26 @@ select distinct p.pro_name, s.hall
   inner join prod_sectors ps on p.id = ps.id_product 
   inner join sectors 	  s  on s.id = ps.id_sector
   ;
+ 
+ 
+select id from products where id = 44;
+
+select s.sec_name, s.hall as sector_hall , s.id
+from products p 
+inner join prod_sectors ps on p.id = ps.id_product
+inner join sectors s on s.id = ps.id_sector
+where p.id = 44 ;
+
+
+
+SELECT s.sec_name, s.hall AS sector_hall, ps.stock FROM products p 
+INNER JOIN prod_sectors ps on p.id = ps.id_product INNER JOIN sectors s on s.id = ps.id_sector WHERE p.id = 44;
+
+truncate table sectors;
+truncate table types;
+truncate table products;
+truncate table prod_sectors;
+
 
 -----------------------------------------------------------------------------------------------------------
 -- general
@@ -45,7 +65,7 @@ select distinct p.pro_name, s.hall
 
 -----------------------------------------------------------------------------------------------------------
 -- products
-  --SELECT * FROM products ;
+  SELECT * FROM products ;
 
   truncate table products;
   insert into products (id, id_type, pro_name, stock, state) 
@@ -63,7 +83,7 @@ select distinct p.pro_name, s.hall
 
 -----------------------------------------------------------------------------------------------------------
 -- product_sectors
-  --select * from product_sectors;
+  select * from prod_sectors;
 
   truncate table prod_sectors;
   insert into prod_sectors (id, id_product, id_sector, stock) 
@@ -97,11 +117,4 @@ select distinct p.pro_name, s.hall
 -----------------------------------------------------------------------------------------------------------
 -- movements
 
------------------------------------------------------------------------------------------------------------
--- various
 
-select s.sec_name, s.hall 
-from products p 
-inner join prod_sectors ps on p.id = ps.id_product
-inner join sectors s on s.id = ps.id_sector
-where p.id = id

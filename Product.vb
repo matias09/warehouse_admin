@@ -42,7 +42,6 @@
     btn_cancel.Visible = state
 
     txt_name.Enabled = True
-    txt_stock.Enabled = True
 
     If state = True Then
       btn_new.Enabled = False
@@ -60,17 +59,10 @@
     btn_prev.Enabled = state
 
     btn_update.Enabled = state
-    btn_delete.Enabled = state
   End Sub
 
   Private Sub SwitchOnOffInputControls(ByVal state As Boolean)
     txt_name.Enabled = state
-
-    If (state = True And rad_state_b.Checked = False) Then
-      txt_stock.Enabled = True
-    Else
-      txt_stock.Enabled = False
-    End If
 
     If (state = True And _mStock = 0) Then
       rad_state_a.Enabled = True
@@ -121,9 +113,6 @@
       If (IsDBNull(_mProductsRecordList.Item(_mActProductsRegPos)("pro_name")) <> True) Then
         txt_name.Text = _mProductsRecordList.Item(_mActProductsRegPos)("pro_name")
 
-        _mStock = _mProductsRecordList.Item(_mActProductsRegPos)("stock")
-        txt_stock.Text = _mStock
-
         _mState = _mProductsRecordList.Item(_mActProductsRegPos)("state")
         If (_mState = STATE_AVAILABLE) Then
           rad_state_a.Checked = True
@@ -141,6 +130,8 @@
       SwitchOnOffControlDataButtons(False)
       SwitchOnOffInputControls(False)
     End If
+
+    FillStockDataById(_mProductsRecordList(_mActProductsRegPos)("id"))
   End Sub
 
   Private Sub UpdateProductsMenu()
@@ -218,15 +209,17 @@
   Private Sub FillStockDataById(ByRef id As Integer)
     Dim rd As OleDb.OleDbDataReader = Nothing
 
+    _mStock = 0
     dat_stock.Rows.Clear()
 
     _mProductsDao.GetDistributionById(id, rd)
     While rd.Read()
-      'MsgBox(rd.Item("id") & "  -  " & rd.Item(1) & "  -  " & rd.Item(2))
       dat_stock.Rows.Add(rd.Item("sector_name"), rd.Item("sector_hall"), rd.Item("stock"))
+      _mStock += rd.Item("stock")
     End While
     rd.Close()
 
+    txt_stock.Text = _mStock
   End Sub
 
   '/-------------------------- EventHandlers Methods --------------------------/
@@ -252,7 +245,7 @@
   Private Sub drp_products_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles drp_products.SelectedIndexChanged
     _mProductsDao.SetRegisterPos(drp_products.SelectedIndex)
     _mActProductsRegPos = drp_products.SelectedIndex
-    FillStockDataById(_mTypesRecordList(_mActProductsRegPos)("id"))
+
     UpdateControls()
   End Sub
 
@@ -330,24 +323,6 @@
     drp_types.Focus()
   End Sub
 
-  Private Sub btn_delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_delete.Click
-    _mProductsDao.SetRegisterPos(_mActProductsRegPos)
-    _mProductsRecordList.RemoveAt(_mActProductsRegPos)
-
-    drp_products.Items.RemoveAt(_mActProductsRegPos)
-    _mProductsDao.EraseRecord()
-
-    If _mActProductsRegPos <> 0 Then
-      _mActProductsRegPos -= 1
-    End If
-
-    ' Back To Normal Menu Behavior
-    SwitchOnOffControlDataButtons(True)
-
-    UpdateControls()
-    UpdateProductsMenu()
-  End Sub
-
   Private Sub btn_next_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_next.Click
     Dim futRegPos As Integer = 0
     Dim eleRecordsCount As Integer = _mProductsRecordList.Count
@@ -358,9 +333,10 @@
   End Sub
 
   Private Sub btn_prev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_prev.Click
-    Dim futRegPos As Integer = _mActProductsRegPos - 1
+    Dim futRegPos As Integer = 0
     Dim eleRecordsCount As Integer = _mProductsRecordList.Count
 
+    futRegPos = _mActProductsRegPos - 1
     _mActProductsRegPos = _mUtils.UpdateRegisterPos(futRegPos, eleRecordsCount)
     drp_products.SelectedIndex = _mActProductsRegPos
   End Sub
