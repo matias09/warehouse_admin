@@ -24,7 +24,6 @@ Partial Class Movement
     Private Sub InitializeComponent()
     Me.zzlabel = New System.Windows.Forms.Label()
     Me.zzlabel2 = New System.Windows.Forms.Label()
-    Me.lab_date = New System.Windows.Forms.Label()
     Me.Label1 = New System.Windows.Forms.Label()
     Me.Label2 = New System.Windows.Forms.Label()
     Me.Label3 = New System.Windows.Forms.Label()
@@ -43,12 +42,13 @@ Partial Class Movement
     Me.btn_next = New System.Windows.Forms.Button()
     Me.btn_delete = New System.Windows.Forms.Button()
     Me.lab_error_msg = New System.Windows.Forms.Label()
+    Me.date_time_picker = New System.Windows.Forms.DateTimePicker()
     Me.SuspendLayout()
     '
     'zzlabel
     '
     Me.zzlabel.AutoSize = True
-    Me.zzlabel.Location = New System.Drawing.Point(15, 32)
+    Me.zzlabel.Location = New System.Drawing.Point(15, 41)
     Me.zzlabel.Name = "zzlabel"
     Me.zzlabel.Size = New System.Drawing.Size(67, 13)
     Me.zzlabel.TabIndex = 0
@@ -57,25 +57,16 @@ Partial Class Movement
     'zzlabel2
     '
     Me.zzlabel2.AutoSize = True
-    Me.zzlabel2.Location = New System.Drawing.Point(15, 5)
+    Me.zzlabel2.Location = New System.Drawing.Point(15, 14)
     Me.zzlabel2.Name = "zzlabel2"
     Me.zzlabel2.Size = New System.Drawing.Size(43, 13)
     Me.zzlabel2.TabIndex = 1
     Me.zzlabel2.Text = "Fecha :"
     '
-    'lab_date
-    '
-    Me.lab_date.AutoSize = True
-    Me.lab_date.Location = New System.Drawing.Point(88, 5)
-    Me.lab_date.Name = "lab_date"
-    Me.lab_date.Size = New System.Drawing.Size(53, 13)
-    Me.lab_date.TabIndex = 2
-    Me.lab_date.Text = "23/23/23"
-    '
     'Label1
     '
     Me.Label1.AutoSize = True
-    Me.Label1.Location = New System.Drawing.Point(15, 64)
+    Me.Label1.Location = New System.Drawing.Point(15, 73)
     Me.Label1.Name = "Label1"
     Me.Label1.Size = New System.Drawing.Size(56, 13)
     Me.Label1.TabIndex = 3
@@ -84,7 +75,7 @@ Partial Class Movement
     'Label2
     '
     Me.Label2.AutoSize = True
-    Me.Label2.Location = New System.Drawing.Point(15, 92)
+    Me.Label2.Location = New System.Drawing.Point(15, 101)
     Me.Label2.Name = "Label2"
     Me.Label2.Size = New System.Drawing.Size(55, 13)
     Me.Label2.TabIndex = 4
@@ -93,7 +84,7 @@ Partial Class Movement
     'Label3
     '
     Me.Label3.AutoSize = True
-    Me.Label3.Location = New System.Drawing.Point(15, 123)
+    Me.Label3.Location = New System.Drawing.Point(15, 132)
     Me.Label3.Name = "Label3"
     Me.Label3.Size = New System.Drawing.Size(55, 13)
     Me.Label3.TabIndex = 5
@@ -102,7 +93,7 @@ Partial Class Movement
     'drp_movements
     '
     Me.drp_movements.FormattingEnabled = True
-    Me.drp_movements.Location = New System.Drawing.Point(88, 24)
+    Me.drp_movements.Location = New System.Drawing.Point(88, 33)
     Me.drp_movements.Name = "drp_movements"
     Me.drp_movements.Size = New System.Drawing.Size(178, 21)
     Me.drp_movements.TabIndex = 1
@@ -110,7 +101,7 @@ Partial Class Movement
     'drp_products
     '
     Me.drp_products.FormattingEnabled = True
-    Me.drp_products.Location = New System.Drawing.Point(88, 56)
+    Me.drp_products.Location = New System.Drawing.Point(88, 65)
     Me.drp_products.Name = "drp_products"
     Me.drp_products.Size = New System.Drawing.Size(178, 21)
     Me.drp_products.TabIndex = 2
@@ -118,7 +109,7 @@ Partial Class Movement
     'drp_sectors
     '
     Me.drp_sectors.FormattingEnabled = True
-    Me.drp_sectors.Location = New System.Drawing.Point(88, 84)
+    Me.drp_sectors.Location = New System.Drawing.Point(88, 93)
     Me.drp_sectors.Name = "drp_sectors"
     Me.drp_sectors.Size = New System.Drawing.Size(178, 21)
     Me.drp_sectors.TabIndex = 3
@@ -126,7 +117,7 @@ Partial Class Movement
     'txt_amount
     '
     Me.txt_amount.Enabled = False
-    Me.txt_amount.Location = New System.Drawing.Point(88, 116)
+    Me.txt_amount.Location = New System.Drawing.Point(88, 125)
     Me.txt_amount.Name = "txt_amount"
     Me.txt_amount.Size = New System.Drawing.Size(178, 20)
     Me.txt_amount.TabIndex = 4
@@ -135,7 +126,7 @@ Partial Class Movement
     '
     Me.rad_add.AutoSize = True
     Me.rad_add.Enabled = False
-    Me.rad_add.Location = New System.Drawing.Point(88, 146)
+    Me.rad_add.Location = New System.Drawing.Point(88, 155)
     Me.rad_add.Name = "rad_add"
     Me.rad_add.Size = New System.Drawing.Size(52, 17)
     Me.rad_add.TabIndex = 5
@@ -147,7 +138,7 @@ Partial Class Movement
     '
     Me.rad_remove.AutoSize = True
     Me.rad_remove.Enabled = False
-    Me.rad_remove.Location = New System.Drawing.Point(155, 146)
+    Me.rad_remove.Location = New System.Drawing.Point(155, 155)
     Me.rad_remove.Name = "rad_remove"
     Me.rad_remove.Size = New System.Drawing.Size(51, 17)
     Me.rad_remove.TabIndex = 6
@@ -158,7 +149,7 @@ Partial Class Movement
     'Label4
     '
     Me.Label4.AutoSize = True
-    Me.Label4.Location = New System.Drawing.Point(15, 146)
+    Me.Label4.Location = New System.Drawing.Point(15, 155)
     Me.Label4.Name = "Label4"
     Me.Label4.Size = New System.Drawing.Size(62, 13)
     Me.Label4.TabIndex = 7
@@ -167,7 +158,7 @@ Partial Class Movement
     'btn_cancel
     '
     Me.btn_cancel.Enabled = False
-    Me.btn_cancel.Location = New System.Drawing.Point(191, 225)
+    Me.btn_cancel.Location = New System.Drawing.Point(191, 231)
     Me.btn_cancel.Name = "btn_cancel"
     Me.btn_cancel.Size = New System.Drawing.Size(75, 23)
     Me.btn_cancel.TabIndex = 106
@@ -178,7 +169,7 @@ Partial Class Movement
     'btn_save
     '
     Me.btn_save.Enabled = False
-    Me.btn_save.Location = New System.Drawing.Point(104, 225)
+    Me.btn_save.Location = New System.Drawing.Point(104, 231)
     Me.btn_save.Name = "btn_save"
     Me.btn_save.Size = New System.Drawing.Size(75, 23)
     Me.btn_save.TabIndex = 105
@@ -188,7 +179,7 @@ Partial Class Movement
     '
     'btn_new
     '
-    Me.btn_new.Location = New System.Drawing.Point(18, 225)
+    Me.btn_new.Location = New System.Drawing.Point(18, 231)
     Me.btn_new.Name = "btn_new"
     Me.btn_new.Size = New System.Drawing.Size(75, 23)
     Me.btn_new.TabIndex = 103
@@ -197,7 +188,7 @@ Partial Class Movement
     '
     'btn_exit
     '
-    Me.btn_exit.Location = New System.Drawing.Point(191, 263)
+    Me.btn_exit.Location = New System.Drawing.Point(191, 269)
     Me.btn_exit.Name = "btn_exit"
     Me.btn_exit.Size = New System.Drawing.Size(75, 23)
     Me.btn_exit.TabIndex = 107
@@ -206,7 +197,7 @@ Partial Class Movement
     '
     'btn_prev
     '
-    Me.btn_prev.Location = New System.Drawing.Point(191, 225)
+    Me.btn_prev.Location = New System.Drawing.Point(191, 231)
     Me.btn_prev.Name = "btn_prev"
     Me.btn_prev.Size = New System.Drawing.Size(75, 23)
     Me.btn_prev.TabIndex = 109
@@ -215,7 +206,7 @@ Partial Class Movement
     '
     'btn_next
     '
-    Me.btn_next.Location = New System.Drawing.Point(104, 225)
+    Me.btn_next.Location = New System.Drawing.Point(104, 231)
     Me.btn_next.Name = "btn_next"
     Me.btn_next.Size = New System.Drawing.Size(75, 23)
     Me.btn_next.TabIndex = 108
@@ -224,7 +215,7 @@ Partial Class Movement
     '
     'btn_delete
     '
-    Me.btn_delete.Location = New System.Drawing.Point(18, 263)
+    Me.btn_delete.Location = New System.Drawing.Point(18, 269)
     Me.btn_delete.Name = "btn_delete"
     Me.btn_delete.Size = New System.Drawing.Size(75, 23)
     Me.btn_delete.TabIndex = 104
@@ -236,17 +227,28 @@ Partial Class Movement
     Me.lab_error_msg.AutoSize = True
     Me.lab_error_msg.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle))
     Me.lab_error_msg.ForeColor = System.Drawing.Color.Crimson
-    Me.lab_error_msg.Location = New System.Drawing.Point(15, 179)
+    Me.lab_error_msg.Location = New System.Drawing.Point(15, 185)
     Me.lab_error_msg.Name = "lab_error_msg"
     Me.lab_error_msg.Size = New System.Drawing.Size(89, 13)
     Me.lab_error_msg.TabIndex = 110
     Me.lab_error_msg.Text = "Error Msg . . . "
     '
+    'date_time_picker
+    '
+    Me.date_time_picker.CustomFormat = "dd/MM/yyyy"
+    Me.date_time_picker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+    Me.date_time_picker.Location = New System.Drawing.Point(88, 7)
+    Me.date_time_picker.Name = "date_time_picker"
+    Me.date_time_picker.Size = New System.Drawing.Size(178, 20)
+    Me.date_time_picker.TabIndex = 111
+    Me.date_time_picker.Value = New Date(2018, 12, 8, 0, 0, 0, 0)
+    '
     'Movement
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
     Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-    Me.ClientSize = New System.Drawing.Size(276, 292)
+    Me.ClientSize = New System.Drawing.Size(276, 298)
+    Me.Controls.Add(Me.date_time_picker)
     Me.Controls.Add(Me.lab_error_msg)
     Me.Controls.Add(Me.btn_prev)
     Me.Controls.Add(Me.btn_next)
@@ -265,7 +267,6 @@ Partial Class Movement
     Me.Controls.Add(Me.Label3)
     Me.Controls.Add(Me.Label2)
     Me.Controls.Add(Me.Label1)
-    Me.Controls.Add(Me.lab_date)
     Me.Controls.Add(Me.zzlabel2)
     Me.Controls.Add(Me.zzlabel)
     Me.Name = "Movement"
@@ -276,7 +277,6 @@ Partial Class Movement
 End Sub
     Friend WithEvents zzlabel As System.Windows.Forms.Label
     Friend WithEvents zzlabel2 As System.Windows.Forms.Label
-    Friend WithEvents lab_date As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
@@ -295,4 +295,5 @@ End Sub
     Friend WithEvents btn_next As System.Windows.Forms.Button
     Friend WithEvents btn_delete As System.Windows.Forms.Button
     Friend WithEvents lab_error_msg As System.Windows.Forms.Label
+    Friend WithEvents date_time_picker As System.Windows.Forms.DateTimePicker
 End Class

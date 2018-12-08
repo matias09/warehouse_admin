@@ -264,4 +264,7 @@
     drp_movements.SelectedIndex = _mActMovementsRegPos
   End Sub
 
+Private Sub date_time_picker_ValueChanged(sender As Object, e As EventArgs) Handles date_time_picker.ValueChanged
+  Console.WriteLine("Date Time Picker value : " & date_time_picker.Value.ToString("dd/MM/yyyy"))
+End Sub
 End Class
