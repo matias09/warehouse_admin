@@ -12,9 +12,9 @@ Public Class Utils
     ElseIf (toForm = "Sector") Then
       Sector.Show()
       Sector.Focus()
-    ElseIf (toForm = "") Then
-      '.Show()
-      '.Focus()
+    ElseIf (toForm = "Movement") Then
+      Movement.Show()
+      Movement.Focus()
     End If
   End Sub
 

@@ -42,6 +42,7 @@ Partial Class Movement
     Me.btn_prev = New System.Windows.Forms.Button()
     Me.btn_next = New System.Windows.Forms.Button()
     Me.btn_delete = New System.Windows.Forms.Button()
+    Me.lab_error_msg = New System.Windows.Forms.Label()
     Me.SuspendLayout()
     '
     'zzlabel
@@ -124,6 +125,7 @@ Partial Class Movement
     '
     'txt_amount
     '
+    Me.txt_amount.Enabled = False
     Me.txt_amount.Location = New System.Drawing.Point(88, 116)
     Me.txt_amount.Name = "txt_amount"
     Me.txt_amount.Size = New System.Drawing.Size(178, 20)
@@ -132,7 +134,8 @@ Partial Class Movement
     'rad_add
     '
     Me.rad_add.AutoSize = True
-    Me.rad_add.Location = New System.Drawing.Point(88, 157)
+    Me.rad_add.Enabled = False
+    Me.rad_add.Location = New System.Drawing.Point(88, 146)
     Me.rad_add.Name = "rad_add"
     Me.rad_add.Size = New System.Drawing.Size(52, 17)
     Me.rad_add.TabIndex = 5
@@ -143,7 +146,8 @@ Partial Class Movement
     'rad_remove
     '
     Me.rad_remove.AutoSize = True
-    Me.rad_remove.Location = New System.Drawing.Point(155, 157)
+    Me.rad_remove.Enabled = False
+    Me.rad_remove.Location = New System.Drawing.Point(155, 146)
     Me.rad_remove.Name = "rad_remove"
     Me.rad_remove.Size = New System.Drawing.Size(51, 17)
     Me.rad_remove.TabIndex = 6
@@ -154,7 +158,7 @@ Partial Class Movement
     'Label4
     '
     Me.Label4.AutoSize = True
-    Me.Label4.Location = New System.Drawing.Point(15, 157)
+    Me.Label4.Location = New System.Drawing.Point(15, 146)
     Me.Label4.Name = "Label4"
     Me.Label4.Size = New System.Drawing.Size(62, 13)
     Me.Label4.TabIndex = 7
@@ -163,7 +167,7 @@ Partial Class Movement
     'btn_cancel
     '
     Me.btn_cancel.Enabled = False
-    Me.btn_cancel.Location = New System.Drawing.Point(191, 194)
+    Me.btn_cancel.Location = New System.Drawing.Point(191, 225)
     Me.btn_cancel.Name = "btn_cancel"
     Me.btn_cancel.Size = New System.Drawing.Size(75, 23)
     Me.btn_cancel.TabIndex = 106
@@ -174,7 +178,7 @@ Partial Class Movement
     'btn_save
     '
     Me.btn_save.Enabled = False
-    Me.btn_save.Location = New System.Drawing.Point(104, 194)
+    Me.btn_save.Location = New System.Drawing.Point(104, 225)
     Me.btn_save.Name = "btn_save"
     Me.btn_save.Size = New System.Drawing.Size(75, 23)
     Me.btn_save.TabIndex = 105
@@ -184,7 +188,7 @@ Partial Class Movement
     '
     'btn_new
     '
-    Me.btn_new.Location = New System.Drawing.Point(18, 194)
+    Me.btn_new.Location = New System.Drawing.Point(18, 225)
     Me.btn_new.Name = "btn_new"
     Me.btn_new.Size = New System.Drawing.Size(75, 23)
     Me.btn_new.TabIndex = 103
@@ -193,7 +197,7 @@ Partial Class Movement
     '
     'btn_exit
     '
-    Me.btn_exit.Location = New System.Drawing.Point(191, 232)
+    Me.btn_exit.Location = New System.Drawing.Point(191, 263)
     Me.btn_exit.Name = "btn_exit"
     Me.btn_exit.Size = New System.Drawing.Size(75, 23)
     Me.btn_exit.TabIndex = 107
@@ -202,7 +206,7 @@ Partial Class Movement
     '
     'btn_prev
     '
-    Me.btn_prev.Location = New System.Drawing.Point(191, 194)
+    Me.btn_prev.Location = New System.Drawing.Point(191, 225)
     Me.btn_prev.Name = "btn_prev"
     Me.btn_prev.Size = New System.Drawing.Size(75, 23)
     Me.btn_prev.TabIndex = 109
@@ -211,7 +215,7 @@ Partial Class Movement
     '
     'btn_next
     '
-    Me.btn_next.Location = New System.Drawing.Point(104, 194)
+    Me.btn_next.Location = New System.Drawing.Point(104, 225)
     Me.btn_next.Name = "btn_next"
     Me.btn_next.Size = New System.Drawing.Size(75, 23)
     Me.btn_next.TabIndex = 108
@@ -220,18 +224,30 @@ Partial Class Movement
     '
     'btn_delete
     '
-    Me.btn_delete.Location = New System.Drawing.Point(18, 232)
+    Me.btn_delete.Location = New System.Drawing.Point(18, 263)
     Me.btn_delete.Name = "btn_delete"
     Me.btn_delete.Size = New System.Drawing.Size(75, 23)
     Me.btn_delete.TabIndex = 104
     Me.btn_delete.Text = "Eliminar"
     Me.btn_delete.UseVisualStyleBackColor = True
     '
+    'lab_error_msg
+    '
+    Me.lab_error_msg.AutoSize = True
+    Me.lab_error_msg.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle))
+    Me.lab_error_msg.ForeColor = System.Drawing.Color.Crimson
+    Me.lab_error_msg.Location = New System.Drawing.Point(15, 179)
+    Me.lab_error_msg.Name = "lab_error_msg"
+    Me.lab_error_msg.Size = New System.Drawing.Size(89, 13)
+    Me.lab_error_msg.TabIndex = 110
+    Me.lab_error_msg.Text = "Error Msg . . . "
+    '
     'Movement
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
     Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-    Me.ClientSize = New System.Drawing.Size(272, 261)
+    Me.ClientSize = New System.Drawing.Size(276, 292)
+    Me.Controls.Add(Me.lab_error_msg)
     Me.Controls.Add(Me.btn_prev)
     Me.Controls.Add(Me.btn_next)
     Me.Controls.Add(Me.btn_cancel)
@@ -278,4 +294,5 @@ End Sub
     Friend WithEvents btn_prev As System.Windows.Forms.Button
     Friend WithEvents btn_next As System.Windows.Forms.Button
     Friend WithEvents btn_delete As System.Windows.Forms.Button
+    Friend WithEvents lab_error_msg As System.Windows.Forms.Label
 End Class
