@@ -33,7 +33,7 @@ Public NotInheritable Class MovementDao
     fieldsList.Add("id_sector", "")
     fieldsList.Add("count", "")
     fieldsList.Add("operation", "")
-    fieldsList.Add("date", "")
+    fieldsList.Add("mov_date", "")
 
     dataBaseManager.PrepareDao(TABLE_NAME, da, cb, dt)
     FillRecordList()
@@ -52,7 +52,7 @@ Public NotInheritable Class MovementDao
       fieldsList("id_sector") = dr("id_sector")
       fieldsList("count") = dr("count")
       fieldsList("operation") = dr("operation")
-      fieldsList("date") = dr("date")
+      fieldsList("mov_date") = dr("mov_date")
       recordList.Add(fieldsList)
       i += 1
     End While

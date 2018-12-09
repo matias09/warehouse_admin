@@ -1,9 +1,6 @@
 ﻿Public Class Movement
   Inherits System.Windows.Forms.Form
 
-  Const SECTOR_TITLE_LABEL_TEXT_ON_IDLE_STATE As String = "Sector:"
-  Const SECTOR_TITLE_LABEL_TEXT_ON_NEW_STATE As String = "Elegir Sector:"
-
   Private _mMovementsRecordList As ArrayList
   Private _mMovementsDao As MovementDao
   Private _mActMovementsRegPos As Integer
@@ -53,6 +50,7 @@
 
     If recordsCount <> 0 Then
       Dim i As Integer = 0
+
       While i < recordsCount
         If (_mProductsValues.ContainsKey(_mProductsRecordList.Item(i)("id")) = False) Then
           _mProductsValues.Add(
@@ -79,6 +77,7 @@
 
     If recordsCount <> 0 Then
       Dim i As Integer = 0
+
       While i < recordsCount
         If (_mSectorsValues.ContainsKey(_mSectorsRecordList.Item(i)("id")) = False) Then
           _mSectorsValues.Add(
@@ -91,7 +90,6 @@
         i += 1
       End While
 
-      'Console.WriteLine("Movement::FillSectorsDropDownMenu - Filltype reg pos : " & _mActSectorsRegPos)
       drp_sectors.SelectedIndex = _mActSectorsRegPos
     Else
       drp_sectors.Enabled = False
@@ -105,6 +103,33 @@
     If (_mMovementsRecordList.Count <> 0) Then
       If (IsDBNull(_mMovementsRecordList.Item(_mActMovementsRegPos)("id")) <> True) Then
         SwitchOnOffControlDataButtons(True)
+
+        Dim p_id As Integer = _mMovementsRecordList.Item(_mActMovementsRegPos)("id_product")
+        Dim s_id As Integer = _mMovementsRecordList.Item(_mActMovementsRegPos)("id_sector")
+
+       'Console.WriteLine("------------------------------------------------------------")
+       'Console.WriteLine("id : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("id"))
+       'Console.WriteLine("id_product : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("id_product"))
+       'Console.WriteLine("product : " & _mProductsValues.Item(p_id))
+       'Console.WriteLine("id_sector : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("id_sector"))
+       'Console.WriteLine("sector : " & _mSectorsValues.Item(s_id))
+       'Console.WriteLine("count : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("count"))
+       'Console.WriteLine("operation : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("operation"))
+       'Console.WriteLine("move_date : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("mov_date"))
+       'Console.WriteLine("------------------------------------------------------------")
+
+        date_time_picker.Value = _mMovementsRecordList.Item(_mActMovementsRegPos)("mov_date")
+        drp_products.SelectedItem = _mProductsValues.Item(p_id)
+        drp_sectors.SelectedItem = _mSectorsValues.Item(s_id)
+        txt_amount.Text = _mMovementsRecordList.Item(_mActMovementsRegPos)("count")
+
+        If _mMovementsRecordList.Item(_mActMovementsRegPos)("operation") = "A" Then
+          rad_add.Checked = True
+          rad_remove.Checked = False
+          Else
+          rad_add.Checked = False
+          rad_remove.Checked = True
+        End If
       End If
     Else
       SwitchOnOffControlDataButtons(False)
@@ -127,10 +152,6 @@
     Else
       drp_movements.Enabled = False
     End If
-  End Sub
-
-  Private Sub UpdateRecordListData()
-    '_mMovementsRecordList(_mActMovementsRegPos)("stock") = lab_stock.Text
   End Sub
 
   Private Sub AddNewRecordToRecordList()

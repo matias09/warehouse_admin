@@ -48,7 +48,7 @@ Partial Class Movement
     'zzlabel
     '
     Me.zzlabel.AutoSize = True
-    Me.zzlabel.Location = New System.Drawing.Point(15, 41)
+    Me.zzlabel.Location = New System.Drawing.Point(15, 14)
     Me.zzlabel.Name = "zzlabel"
     Me.zzlabel.Size = New System.Drawing.Size(67, 13)
     Me.zzlabel.TabIndex = 0
@@ -57,7 +57,7 @@ Partial Class Movement
     'zzlabel2
     '
     Me.zzlabel2.AutoSize = True
-    Me.zzlabel2.Location = New System.Drawing.Point(15, 14)
+    Me.zzlabel2.Location = New System.Drawing.Point(15, 42)
     Me.zzlabel2.Name = "zzlabel2"
     Me.zzlabel2.Size = New System.Drawing.Size(43, 13)
     Me.zzlabel2.TabIndex = 1
@@ -92,27 +92,31 @@ Partial Class Movement
     '
     'drp_movements
     '
-    Me.drp_movements.FormattingEnabled = True
-    Me.drp_movements.Location = New System.Drawing.Point(88, 33)
+    Me.drp_movements.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+    Me.drp_movements.Location = New System.Drawing.Point(88, 6)
     Me.drp_movements.Name = "drp_movements"
     Me.drp_movements.Size = New System.Drawing.Size(178, 21)
     Me.drp_movements.TabIndex = 1
     '
     'drp_products
     '
+    Me.drp_products.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+    Me.drp_products.Enabled = False
     Me.drp_products.FormattingEnabled = True
     Me.drp_products.Location = New System.Drawing.Point(88, 65)
     Me.drp_products.Name = "drp_products"
     Me.drp_products.Size = New System.Drawing.Size(178, 21)
-    Me.drp_products.TabIndex = 2
+    Me.drp_products.TabIndex = 3
     '
     'drp_sectors
     '
+    Me.drp_sectors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+    Me.drp_sectors.Enabled = False
     Me.drp_sectors.FormattingEnabled = True
     Me.drp_sectors.Location = New System.Drawing.Point(88, 93)
     Me.drp_sectors.Name = "drp_sectors"
     Me.drp_sectors.Size = New System.Drawing.Size(178, 21)
-    Me.drp_sectors.TabIndex = 3
+    Me.drp_sectors.TabIndex = 4
     '
     'txt_amount
     '
@@ -120,7 +124,7 @@ Partial Class Movement
     Me.txt_amount.Location = New System.Drawing.Point(88, 125)
     Me.txt_amount.Name = "txt_amount"
     Me.txt_amount.Size = New System.Drawing.Size(178, 20)
-    Me.txt_amount.TabIndex = 4
+    Me.txt_amount.TabIndex = 5
     '
     'rad_add
     '
@@ -129,7 +133,7 @@ Partial Class Movement
     Me.rad_add.Location = New System.Drawing.Point(88, 155)
     Me.rad_add.Name = "rad_add"
     Me.rad_add.Size = New System.Drawing.Size(52, 17)
-    Me.rad_add.TabIndex = 5
+    Me.rad_add.TabIndex = 6
     Me.rad_add.TabStop = True
     Me.rad_add.Text = "ALTA"
     Me.rad_add.UseVisualStyleBackColor = True
@@ -141,7 +145,7 @@ Partial Class Movement
     Me.rad_remove.Location = New System.Drawing.Point(155, 155)
     Me.rad_remove.Name = "rad_remove"
     Me.rad_remove.Size = New System.Drawing.Size(51, 17)
-    Me.rad_remove.TabIndex = 6
+    Me.rad_remove.TabIndex = 7
     Me.rad_remove.TabStop = True
     Me.rad_remove.Text = "BAJA"
     Me.rad_remove.UseVisualStyleBackColor = True
@@ -182,7 +186,7 @@ Partial Class Movement
     Me.btn_new.Location = New System.Drawing.Point(18, 231)
     Me.btn_new.Name = "btn_new"
     Me.btn_new.Size = New System.Drawing.Size(75, 23)
-    Me.btn_new.TabIndex = 103
+    Me.btn_new.TabIndex = 20
     Me.btn_new.Text = "Nuevo"
     Me.btn_new.UseVisualStyleBackColor = True
     '
@@ -191,7 +195,7 @@ Partial Class Movement
     Me.btn_exit.Location = New System.Drawing.Point(191, 269)
     Me.btn_exit.Name = "btn_exit"
     Me.btn_exit.Size = New System.Drawing.Size(75, 23)
-    Me.btn_exit.TabIndex = 107
+    Me.btn_exit.TabIndex = 60
     Me.btn_exit.Text = "Salir"
     Me.btn_exit.UseVisualStyleBackColor = True
     '
@@ -200,7 +204,7 @@ Partial Class Movement
     Me.btn_prev.Location = New System.Drawing.Point(191, 231)
     Me.btn_prev.Name = "btn_prev"
     Me.btn_prev.Size = New System.Drawing.Size(75, 23)
-    Me.btn_prev.TabIndex = 109
+    Me.btn_prev.TabIndex = 40
     Me.btn_prev.Text = "Anterior"
     Me.btn_prev.UseVisualStyleBackColor = True
     '
@@ -209,7 +213,7 @@ Partial Class Movement
     Me.btn_next.Location = New System.Drawing.Point(104, 231)
     Me.btn_next.Name = "btn_next"
     Me.btn_next.Size = New System.Drawing.Size(75, 23)
-    Me.btn_next.TabIndex = 108
+    Me.btn_next.TabIndex = 30
     Me.btn_next.Text = "Sigiente"
     Me.btn_next.UseVisualStyleBackColor = True
     '
@@ -218,7 +222,7 @@ Partial Class Movement
     Me.btn_delete.Location = New System.Drawing.Point(18, 269)
     Me.btn_delete.Name = "btn_delete"
     Me.btn_delete.Size = New System.Drawing.Size(75, 23)
-    Me.btn_delete.TabIndex = 104
+    Me.btn_delete.TabIndex = 50
     Me.btn_delete.Text = "Eliminar"
     Me.btn_delete.UseVisualStyleBackColor = True
     '
@@ -235,12 +239,14 @@ Partial Class Movement
     '
     'date_time_picker
     '
+    Me.date_time_picker.Cursor = System.Windows.Forms.Cursors.No
     Me.date_time_picker.CustomFormat = "dd/MM/yyyy"
+    Me.date_time_picker.Enabled = False
     Me.date_time_picker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-    Me.date_time_picker.Location = New System.Drawing.Point(88, 7)
+    Me.date_time_picker.Location = New System.Drawing.Point(88, 35)
     Me.date_time_picker.Name = "date_time_picker"
     Me.date_time_picker.Size = New System.Drawing.Size(178, 20)
-    Me.date_time_picker.TabIndex = 111
+    Me.date_time_picker.TabIndex = 2
     Me.date_time_picker.Value = New Date(2018, 12, 8, 0, 0, 0, 0)
     '
     'Movement

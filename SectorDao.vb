@@ -27,6 +27,7 @@
     fieldsList = New Hashtable()
     dataBaseManager = dataBaseManager.GetInstance()
 
+    fieldsList.Add("id", "")
     fieldsList.Add("sec_name", "")
     fieldsList.Add("hall", "")
 
@@ -42,6 +43,7 @@
     While i < rowsCount
       fieldsList = New Hashtable()
       dr = dt.Rows(i)
+      fieldsList("id") = dr("id")
       fieldsList("sec_name") = dr("sec_name")
       fieldsList("hall") = dr("hall")
       recordList.Add(fieldsList)
