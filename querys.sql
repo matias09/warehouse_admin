@@ -33,9 +33,9 @@ truncate table prod_sectors;
 
 
 
-INSERT INTO movements (id, `id_product`, id_sector, count, operation, `mov_date`)
-VALUES (NULL, 86, 54, 20, "B","22/1/2018");
+INSERT INTO movements (id, id_product, id_sector, count, operation, mov_date) VALUES (NULL, 86, 54, 20, "B","22/1/2018");
 
+INSERT INTO movements (id, id_product, id_sector, count, operation, mov_date) VALUES (NULL, 86, 54, 20, "B","22/1/2018");
 
 UPDATE movements SET id_product = 99 WHERE id = 7;
 UPDATE movements SET id_sector = 58 WHERE id = 7;

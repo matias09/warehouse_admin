@@ -165,7 +165,7 @@ Partial Class Movement
     Me.btn_cancel.Location = New System.Drawing.Point(191, 231)
     Me.btn_cancel.Name = "btn_cancel"
     Me.btn_cancel.Size = New System.Drawing.Size(75, 23)
-    Me.btn_cancel.TabIndex = 106
+    Me.btn_cancel.TabIndex = 60
     Me.btn_cancel.Text = "Cancelar"
     Me.btn_cancel.UseVisualStyleBackColor = True
     Me.btn_cancel.Visible = False
@@ -176,7 +176,7 @@ Partial Class Movement
     Me.btn_save.Location = New System.Drawing.Point(104, 231)
     Me.btn_save.Name = "btn_save"
     Me.btn_save.Size = New System.Drawing.Size(75, 23)
-    Me.btn_save.TabIndex = 105
+    Me.btn_save.TabIndex = 50
     Me.btn_save.Text = "Guardar"
     Me.btn_save.UseVisualStyleBackColor = True
     Me.btn_save.Visible = False
@@ -195,7 +195,7 @@ Partial Class Movement
     Me.btn_exit.Location = New System.Drawing.Point(191, 269)
     Me.btn_exit.Name = "btn_exit"
     Me.btn_exit.Size = New System.Drawing.Size(75, 23)
-    Me.btn_exit.TabIndex = 60
+    Me.btn_exit.TabIndex = 80
     Me.btn_exit.Text = "Salir"
     Me.btn_exit.UseVisualStyleBackColor = True
     '
@@ -222,7 +222,7 @@ Partial Class Movement
     Me.btn_delete.Location = New System.Drawing.Point(18, 269)
     Me.btn_delete.Name = "btn_delete"
     Me.btn_delete.Size = New System.Drawing.Size(75, 23)
-    Me.btn_delete.TabIndex = 50
+    Me.btn_delete.TabIndex = 70
     Me.btn_delete.Text = "Eliminar"
     Me.btn_delete.UseVisualStyleBackColor = True
     '
@@ -254,12 +254,12 @@ Partial Class Movement
     Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
     Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
     Me.ClientSize = New System.Drawing.Size(276, 298)
+    Me.Controls.Add(Me.btn_cancel)
+    Me.Controls.Add(Me.btn_save)
     Me.Controls.Add(Me.date_time_picker)
     Me.Controls.Add(Me.lab_error_msg)
     Me.Controls.Add(Me.btn_prev)
     Me.Controls.Add(Me.btn_next)
-    Me.Controls.Add(Me.btn_cancel)
-    Me.Controls.Add(Me.btn_save)
     Me.Controls.Add(Me.btn_delete)
     Me.Controls.Add(Me.btn_new)
     Me.Controls.Add(Me.btn_exit)

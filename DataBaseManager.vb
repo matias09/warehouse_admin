@@ -18,7 +18,7 @@
     Dim database_path As String
     database_path = Application.StartupPath
 
-    Console.WriteLine("DATABASE Initialized - Using this path: " & database_path)
+'Console.WriteLine("DATABASE Initialized - Using this path: " & database_path)
     dbConn = New OleDb.OleDbConnection("Provider=Microsoft.JET.OLEDB.4.0;Data Source=" & database_path & "\" & DATABASE_NAME)
     dbConn.Open()
   End Sub
@@ -46,28 +46,13 @@
     dt.AcceptChanges()
   End Sub
 
-
   Public Sub ExecuteQuery(ByRef sql As String, ByRef rd As OleDb.OleDbDataReader)
     cd = New OleDb.OleDbCommand(sql, dbConn)
     rd = cd.ExecuteReader()
     cd.Dispose()
   End Sub
 
-  ' Public Function ExecuteQuery(ByRef sql As String, ByRef cmd As OleDb.OleDbCommand) As OleDb.OleDbDataReader
-  '   Dim connetionString As String
-  '   Dim reader As OleDb.OleDbDataReader
-
-  '   connetionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Your mdb filename;"
-  '   Sql = "select * from products where id = 39"
-
-  '   cmd = New OleDb.OleDbCommand(Sql, dbConn)
-  '   reader = cmd.ExecuteReader()
-  '   While reader.Read()
-  '     MsgBox(reader.Item(0) & "  -  " & reader.Item(1) & "  -  " & reader.Item(2))
-  '   End While
-  '   reader.Close()
-  '   cmd.Dispose()
-
-  '   Return reader
-  ' End Function
+Public Function GetConnectionInstance() As OleDb.OleDbConnection
+  Return dbConn
+End Function
 End Class

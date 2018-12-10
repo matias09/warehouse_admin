@@ -63,15 +63,11 @@ Public NotInheritable Class MovementDao
   End Sub
 
   Public Sub SaveRecord(ByVal isNewRecord As Boolean)
-'    Console.WriteLine(" Save Record : register pos : " & registerPos)
-
     If isNewRecord = True Then
       dr = dt.NewRow()
       dt.Rows.Add(dr)
       registerPos = dt.Rows.Count - 1
     End If
-
-' Console.WriteLine(" Save Record 2 : register pos : " & registerPos)
 
     dr = dt.Rows(registerPos)
     SaveDataInRecord()
@@ -109,22 +105,31 @@ Public NotInheritable Class MovementDao
 
     fieldsCount = fieldsList.Count
     While i < fieldsCount
-      Console.WriteLine("MovementDao.vb:SaveDataInRecord() \n Element - " & recordList.Item(registerPos)(fieldsList.Keys(i)))
+      Console.WriteLine("MovementDao.vb:SaveDataInRecord() Element {1} = {0}", recordList.Item(registerPos)(fieldsList.Keys(i)), fieldsList.Keys(i))
+
       dr(fieldsList.Keys(i)) = recordList.Item(registerPos)(fieldsList.Keys(i))
       i += 1
     End While
   End Sub
 
-  Public Sub GetDistributionById(ByRef id As Integer, ByRef rd As OleDb.OleDbDataReader)
-    Dim sql As String
+  Public Sub insert(ByRef data As Hashtable)
+    Dim sql As String = "INSERT INTO movements VALUES(@id, @id_product, @id_sector, @count, @operation, @mov_date)"
+    Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
 
-    sql = " SELECT s.sec_name AS sector_name, s.hall AS sector_hall, ps.stock" +
-          " FROM (movements p INNER JOIN prod_sectors ps ON p.id = ps.id_product)" +
-          " INNER JOIN sectors s ON (s.id = ps.id_sector)" +
-          " WHERE p.id = " & id
-    dataBaseManager.ExecuteQuery(sql, rd)
+    Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
+    cd.CommandText = sql
+    cd.Parameters.Add("@id", OleDb.OleDbType.Integer).Value = data("id")
+    cd.Parameters.Add("@id_product", OleDb.OleDbType.Integer).Value = data("id_product")
+    cd.Parameters.Add("@id_sector", OleDb.OleDbType.Integer).Value = data("id_sector")
+    cd.Parameters.Add("@count", OleDb.OleDbType.Integer).Value = data("count")
+    cd.Parameters.Add("@operation", OleDb.OleDbType.Char).Value = data("operation")
+    cd.Parameters.Add("@mov_date", OleDb.OleDbType.Date).Value = data("mov_date")
 
-    Console.WriteLine("sql : " & sql)
+    cd.ExecuteReader()
+    cd.Dispose()
+
+    registerPos = dt.Rows.Count - 1
+    SaveDataInRecord()
   End Sub
 
   Public Sub GetById(ByRef id As Integer, ByRef rd As OleDb.OleDbDataReader)

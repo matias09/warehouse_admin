@@ -33,6 +33,22 @@
     End If
   End Sub
 
+  Private Sub SwitchOnOffControlInputsForNewData(ByVal state As Boolean)
+    ' DropDown Controllers
+    drp_products.Enabled = state
+    drp_sectors.Enabled = state
+
+    ' Radio Buttons
+    rad_add.Enabled = state
+    rad_remove.Enabled = state
+
+    ' Text Buttons Controllers
+    txt_amount.Enabled = state
+
+    ' Date Time Picker
+    date_time_picker.Enabled = state
+  End Sub
+
   Private Sub SwitchOnOffControlDataButtons(ByVal state As Boolean)
     ' DropDown Controllers
     drp_movements.Enabled = state
@@ -156,13 +172,28 @@
 
   Private Sub AddNewRecordToRecordList()
     Dim fields As Hashtable = New Hashtable()
+    Dim id As Integer = 1
 
-    fields("id") = 0
+    If _mMovementsRecordList.Count <> 0 Then
+      id = _mMovementsRecordList.Item(_mMovementsRecordList.Count - 1)("id") + 1
+    End If
+
+Console.WriteLine("id : " & id)
+
+    fields("id") = id
     fields("id_product") = _mProductsValues.Keys(drp_products.SelectedIndex)
     fields("id_sector") = _mSectorsValues.Keys(drp_sectors.SelectedIndex)
-    fields("count") = 0
-    fields("operation") = 0
-    fields("date") = ""
+    fields("count") = txt_amount.Text
+    fields("mov_date") = date_time_picker.Value.ToUniversalTime()
+
+    If (rad_add.Checked = True) Then
+      fields("operation") = "A"
+    Else
+      fields("operation") = "B"
+    End If
+
+      Console.WriteLine("Before save date : " & date_time_picker.Value.ToUniversalTime())
+      _mMovementsDao.insert(fields)
 
     _mMovementsRecordList.Add(fields)
   End Sub
@@ -179,7 +210,7 @@
   Private Function ValidateInputs() As Boolean
     ''Console.WriteLine("------ Movements: Inside ValidateInputs() ------")
     If _mUtils.CheckExpressionByPatternMatching(txt_amount.Text, "^[0-9]+$") = False Then
-      Console.WriteLine("------ Movements: Inside ValidateInputs() -> IF 2 ------")
+      Console.WriteLine("------ Movements: Inside ValidateInputs() -> IF 1 ------")
       ShowErrorLabel("Error: Stock Invalido")
       Return False
     End If
@@ -188,7 +219,11 @@
   End Function
 
   Private Sub CustomResetControls()
+    drp_products.SelectedIndex = 0
     drp_sectors.SelectedIndex = 0
+    txt_amount.Text = 0
+    rad_add.Checked = True
+    rad_remove.Checked = False
   End Sub
 
   '/-------------------------- EventHandlers Methods --------------------------/
@@ -244,10 +279,12 @@
       _mMovementsDao.SetRecordList(_mMovementsRecordList)
 
       UpdateMovementsMenu()
-      _mMovementsDao.SaveRecord(True)
+
+      '_mMovementsDao.SaveRecord(True)
 
       ' Back To Normal Menu Behavior
       SwitchOnOffControlSaveButtons(False)
+      SwitchOnOffControlInputsForNewData(False)
 
       UpdateControls()
     End If
@@ -262,9 +299,10 @@
     CustomResetControls()
     SwitchOnOffControlSaveButtons(True)
     SwitchOnOffControlDataButtons(False)
+    SwitchOnOffControlInputsForNewData(True)
 
     ' focus on the sectors movement menu
-    drp_sectors.Focus()
+    drp_products.Focus()
   End Sub
 
   Private Sub btn_next_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_next.Click
