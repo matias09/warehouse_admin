@@ -154,12 +154,15 @@ Public NotInheritable Class MovementDao
    Dim sql As String = ""
    Dim rd As OleDb.OleDbDataReader = Nothing
 
-   sql = "SELECT id FROM " + TABLE_NAME_PROD_SECTORS + " ORDER BY id DESC"
+   sql = "SELECT TOP 1 id FROM " + TABLE_NAME_PROD_SECTORS + " ORDER BY id DESC"
    Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
 
    rd = cd.ExecuteReader()
-   If rd.HasRows > 0 Then
-     id = rd.Item("id")
+   If rd.HasRows = True Then
+     While rd.Read()
+       id = rd.Item("id") + 1
+     End While
+     rd.Close()
    End If
    cd.Dispose()
 
@@ -172,8 +175,8 @@ Public NotInheritable Class MovementDao
     cd.Parameters.Add("@id_sector", OleDb.OleDbType.Integer).Value = id_sector
     cd.Parameters.Add("@stock", OleDb.OleDbType.Integer).Value = stock
 
-    'cd.ExecuteReader()
-    'cd.Dispose()
+    cd.ExecuteReader()
+    cd.Dispose()
   End Sub
 
   Private Sub UpdateProdSectorsTable(ByRef stock As Integer, ByRef id_product As Integer, ByRef id_sector As Integer, ByRef dbConn As OleDb.OleDbConnection)
@@ -212,14 +215,12 @@ Public NotInheritable Class MovementDao
 
     rd = cd.ExecuteReader()
 
-      Console.WriteLine("-- MATIAS -- hasRows:  " & rd.HasRows)
+    Console.WriteLine("-- MATIAS -- hasRows:  " & rd.HasRows)
     If rd.HasRows = True Then
      While rd.Read()
        stock += rd.Item("stock")
      End While
      rd.Close()
-
-      Console.WriteLine("-- MATIAS -- stock:  " & stock)
       Return stock
     Else
       Return 0
