@@ -153,6 +153,23 @@ Public NotInheritable Class MovementDao
     InsertIntoProductSectorTable(stock, id_product, id_sector, dbConn)
   End Sub
 
+  Public Sub EraseMovementRecord(ByRef id As Integer)
+
+    Console.WriteLine("-- MATIAS -- EraseMovementRecord() -- ")
+
+    Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
+    Dim sql As String = ""
+
+    sql = "DELETE FROM " + TABLE_NAME +
+          " WHERE id = @id "
+
+    ' Insert into Movements
+    Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
+    cd.Parameters.Add("@id", OleDb.OleDbType.Integer).Value = id
+
+    cd.ExecuteNonQuery()
+    cd.Dispose()
+  End Sub
   ' Privates
   Private Sub SaveDataInRecord()
     Dim i As Integer = 0

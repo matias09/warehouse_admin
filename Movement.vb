@@ -196,8 +196,6 @@
     Else
       fields("operation") = "B"
 
-      Console.WriteLine("MATIAS: AddNewRecordToRecordList() -- old_stock : " & stock)
-      Console.WriteLine("MATIAS: AddNewRecordToRecordList() -- count : " & count)
       If stock = count Then
         ' Deletes record from Product Sector
         _mMovementsDao.DeleteProductSectorRowByIds(id_product, id_sector)
@@ -297,6 +295,44 @@
 
       UpdateControls()
     End If
+  End Sub
+
+  Private Sub btn_delete_Click(sender As Object, e As EventArgs) Handles btn_delete.Click
+    Dim id As Integer = drp_movements.SelectedIndex
+    Dim id_product As Integer = _mProductsValues.Keys(drp_products.SelectedIndex)
+    Dim id_sector As Integer = _mSectorsValues.Keys(drp_sectors.SelectedIndex)
+    Dim count As Integer = txt_count.Text
+
+    ' Checks stock count
+    Dim stock As Integer = _mMovementsDao.GetProductSectorStock(id_product, id_sector)
+
+    If stock = count Then
+      ' Deletes record from Product Sector
+      _mMovementsDao.DeleteProductSectorRowByIds(id_product, id_sector)
+
+      ' Removes the stock amount from Product Table
+      _mMovementsDao.UpdateProductStock((count * (-1)), id_product, id_sector)
+    ElseIf count < stock Then
+      ' Removes the stock amout from Product Sector Table
+      _mMovementsDao.UpdateStockOnProductSectorTable((stock - count), id_product, id_sector)
+
+      ' Removes the stock amout from Product Table
+      _mMovementsDao.UpdateProductStock((count * (-1)), id_product, id_sector)
+    End If
+
+    ' Erase record from DB
+    _mMovementsDao.EraseMovementRecord(drp_movements.SelectedIndex)
+
+    ' updates controls
+    _mMovementsRecordList.RemoveAt(drp_movements.SelectedIndex)
+    drp_movements.Items.RemoveAt(drp_movements.SelectedIndex)
+
+    If _mActMovementsRegPos = _mMovementsRecordList.Count Then
+      _mActMovementsRegPos -= 1
+    End If
+
+    UpdateMovementsMenu()
+    UpdateControls()
   End Sub
 
   Private Sub btn_cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_cancel.Click
