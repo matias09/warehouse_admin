@@ -222,8 +222,14 @@
 
   Private Function ValidateInputs() As Boolean
     If _mUtils.CheckExpressionByPatternMatching(txt_count.Text, "^[0-9]+$") = False Then
-      Console.WriteLine("------ Movements: Inside ValidateInputs() -> IF 1 ------")
+     ' Console.WriteLine("------ Movements: Inside ValidateInputs() -> IF 1 ------")
       MsgBox("Error: El Stock contiene caracteres invalidos")
+      Return False
+    End If
+
+    If txt_count.Text < 1 Then
+     ' Console.WriteLine("------ Movements: Inside ValidateInputs() -> IF 1 ------")
+      MsgBox("Error: La cantidad de Stock es nula")
       Return False
     End If
 
@@ -368,7 +374,4 @@
     drp_movements.SelectedIndex = _mActMovementsRegPos
   End Sub
 
-Private Sub date_time_picker_ValueChanged(sender As Object, e As EventArgs) Handles date_time_picker.ValueChanged
-  Console.WriteLine("Date Time Picker value : " & date_time_picker.Value.ToString("dd/MM/yyyy"))
-End Sub
 End Class

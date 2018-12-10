@@ -33,7 +33,6 @@
     btn_prev.Enabled = state
 
     btn_update.Enabled = state
-    btn_delete.Enabled = state
   End Sub
 
   Private Sub SwitchOnOffInputControls(ByVal state As Boolean)
@@ -43,7 +42,6 @@
 
   Private Sub UpdateControls()
     _mUtils.ResetControls(Me)
-    ResetErrorLabel()
 
     Console.WriteLine(" UpdateControls : _mActSectorsRegPos : " & _mActSectorsRegPos)
     Console.WriteLine(" UpdateControls : _mSectorsRecordList.Count : " & _mSectorsRecordList.Count)
@@ -100,27 +98,18 @@
     _mSectorsRecordList.Add(fields)
   End Sub
 
-  Private Sub ResetErrorLabel()
-    lab_sector_error_msg.Visible = False
-  End Sub
-
-  Private Sub ShowErrorLabel(ByRef msg As String)
-    lab_sector_error_msg.Text = msg
-    lab_sector_error_msg.Visible = True
-  End Sub
-
   Private Function ValidateInputs() As Boolean
     Dim valid As Boolean = True
     'Console.WriteLine("------ Sectors: Inside ValidateInputs() ------")
     If _mUtils.CheckExpressionByPatternMatching(txt_name.Text, "^[a-zA-Z]+$") = False Then
       Console.WriteLine("------ Sectors: Inside ValidateInputs() -> IF 1 ------")
-      ShowErrorLabel("Error: Nombre Invalido")
+      MsgBox("Error: Nombre Invalido")
       valid = False
     End If
 
     If _mUtils.CheckExpressionByPatternMatching(txt_hall.Text, "^[0-9]+$") = False Then
       Console.WriteLine("------ Sectors: Inside ValidateInputs() -> IF 2 ------")
-      lab_sector_error_msg.Text = "Error: Pasillo Invalido"
+      MsgBox("Error: Pasillo Invalido")
       valid = False
     End If
 
@@ -135,7 +124,6 @@
     _mSectorsRecordList = _mSectorsDao.GetRecords()
     _mActSectorsRegPos = _mSectorsDao.GetRegisterPos()
 
-    ResetErrorLabel()
     UpdateControls()
     UpdateSectorsMenu()
   End Sub
@@ -147,7 +135,6 @@
   End Sub
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
     Console.WriteLine("Sectors - I press Exit button")
-    ResetErrorLabel()
     Me.Hide()
     Form1.Show()
     Form1.Focus()
@@ -159,7 +146,6 @@
 
   Private Sub btn_update_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_update.Click
     If ValidateInputs() = True Then
-      ResetErrorLabel()
 
       UpdateRecordListData()
       _mSectorsDao.SetRecordList(_mSectorsRecordList)
@@ -174,7 +160,6 @@
 
   Private Sub btn_save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_save.Click
     If ValidateInputs() = True Then
-      ResetErrorLabel()
 
       AddNewRecordToRecordList()
       _mSectorsDao.SetRecordList(_mSectorsRecordList)
@@ -198,24 +183,6 @@
     _mUtils.ResetControls(Me)
     SwitchOnOffControlSaveButtons(True)
     SwitchOnOffControlDataButtons(False)
-  End Sub
-
-  Private Sub btn_delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_delete.Click
-    _mSectorsDao.SetRegisterPos(_mActSectorsRegPos)
-    _mSectorsRecordList.RemoveAt(_mActSectorsRegPos)
-
-    drp_sectors.Items.RemoveAt(_mActSectorsRegPos)
-    _mSectorsDao.EraseRecord()
-
-    If _mActSectorsRegPos = _mSectorsRecordList.Count Then
-      _mActSectorsRegPos -= 1
-    End If
-
-    ' Back To Normal Menu Behavior
-    SwitchOnOffControlDataButtons(True)
-
-    UpdateControls()
-    UpdateSectorsMenu()
   End Sub
 
   Private Sub btn_next_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_next.Click

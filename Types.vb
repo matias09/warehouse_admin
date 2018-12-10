@@ -33,7 +33,6 @@
     btn_prev.Enabled = state
 
     btn_update.Enabled = state
-    btn_delete.Enabled = state
   End Sub
 
   Private Sub SwitchOnOffInputControls(ByVal state As Boolean)
@@ -43,7 +42,6 @@
 
   Private Sub UpdateControls()
     _mUtils.ResetControls(Me)
-    ResetErrorLabel()
 
     Console.WriteLine(" UpdateControls : _mActTypesRegPos : " & _mActTypesRegPos)
     Console.WriteLine(" UpdateControls : _mTypesRecordList.Count : " & _mTypesRecordList.Count)
@@ -99,27 +97,18 @@
     _mTypesRecordList.Add(fields)
   End Sub
 
-  Private Sub ResetErrorLabel()
-    lab_type_error_msg.Visible = False
-  End Sub
-
-  Private Sub ShowErrorLabel(ByRef msg As String)
-    lab_type_error_msg.Text = msg
-    lab_type_error_msg.Visible = True
-  End Sub
-
   Private Function ValidateInputs() As Boolean
     Dim valid As Boolean = True
     'Console.WriteLine("------ Types: Inside ValidateInputs() ------")
     If _mUtils.CheckExpressionByPatternMatching(txt_name.Text, "^[a-zA-Z]+$") = False Then
       Console.WriteLine("------ Types: Inside ValidateInputs() -> IF 1 ------")
-      ShowErrorLabel("Error: Nombre Invalido")
+      MsgBox("Error: Nombre Invalido")
       valid = False
     End If
 
     If _mUtils.CheckExpressionByPatternMatching(txt_codint.Text, "[A-Z]{4}-[0-9]{2}\/[A-Z]{1}[0-9]{1}") = False Then
       Console.WriteLine("------ Types: Inside ValidateInputs() -> IF 2 ------")
-      lab_type_error_msg.Text = "Error: COD INT Invalido"
+      MsgBox("Error: COD INT Invalido")
       valid = False
     End If
 
@@ -134,7 +123,6 @@
     _mTypesRecordList = _mTypesDao.GetRecords()
     _mActTypesRegPos = _mTypesDao.GetRegisterPos()
 
-    ResetErrorLabel()
     UpdateControls()
     UpdateTypesMenu()
   End Sub
@@ -147,7 +135,6 @@
 
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
     Console.WriteLine("Types - I press Exit button")
-    ResetErrorLabel()
     Me.Hide()
     Form1.Show()
     Form1.Focus()
@@ -159,7 +146,6 @@
 
   Private Sub btn_update_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_update.Click
     If ValidateInputs() = True Then
-      ResetErrorLabel()
 
       UpdateRecordListData()
       _mTypesDao.SetRecordList(_mTypesRecordList)
@@ -174,7 +160,6 @@
 
   Private Sub btn_save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_save.Click
     If ValidateInputs() = True Then
-      ResetErrorLabel()
 
       AddNewRecordToRecordList()
       _mTypesDao.SetRecordList(_mTypesRecordList)
@@ -198,24 +183,6 @@
     _mUtils.ResetControls(Me)
     SwitchOnOffControlSaveButtons(True)
     SwitchOnOffControlDataButtons(False)
-  End Sub
-
-  Private Sub btn_delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_delete.Click
-    _mTypesDao.SetRegisterPos(_mActTypesRegPos)
-    _mTypesRecordList.RemoveAt(_mActTypesRegPos)
-
-    drp_types.Items.RemoveAt(_mActTypesRegPos)
-    _mTypesDao.EraseRecord()
-
-    If _mActTypesRegPos = _mTypesRecordList.Count Then
-      _mActTypesRegPos -= 1
-    End If
-
-    ' Back To Normal Menu Behavior
-    SwitchOnOffControlDataButtons(True)
-
-    UpdateControls()
-    UpdateTypesMenu()
   End Sub
 
   Private Sub btn_next_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_next.Click

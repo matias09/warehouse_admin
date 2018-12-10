@@ -107,7 +107,6 @@
 
   Private Sub UpdateControls()
     _mUtils.ResetControls(Me)
-    ResetErrorLabel()
 
     If (_mProductsRecordList.Count <> 0) Then
       If (IsDBNull(_mProductsRecordList.Item(_mActProductsRegPos)("pro_name")) <> True) Then
@@ -169,28 +168,12 @@
     _mProductsRecordList.Add(fields)
   End Sub
 
-  Private Sub ResetErrorLabel()
-    lab_error_msg.Visible = False
-  End Sub
-
-  Private Sub ShowErrorLabel(ByRef msg As String)
-    lab_error_msg.Text = msg
-    lab_error_msg.Visible = True
-  End Sub
-
   Private Function ValidateInputs() As Boolean
-    ''Console.WriteLine("------ Products: Inside ValidateInputs() ------")
     If _mUtils.CheckExpressionByPatternMatching(txt_name.Text, "^[a-zA-Z]+$") = False Then
       Console.WriteLine("------ Products: Inside ValidateInputs() -> IF 1 ------")
-      ShowErrorLabel("Error: Nombre Invalido")
+      MsgBox("Error: Nombre Invalido")
       Return False
     End If
-
-'    If _mUtils.CheckExpressionByPatternMatching(txt_stock.Text, "^[0-9]+$") = False Then
-'      Console.WriteLine("------ Products: Inside ValidateInputs() -> IF 2 ------")
-'      ShowErrorLabel("Error: Stock Invalido")
-'      Return False
-'    End If
 
     Return True
   End Function
@@ -232,7 +215,6 @@
 
     _mUtils = New Utils()
 
-    ResetErrorLabel()
     FillTypesDropDownMenu()
 
     UpdateControls()
@@ -252,7 +234,6 @@
 
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
     'Console.WriteLine("Products - I press Exit button")
-    ResetErrorLabel()
     Me.Hide()
     Form1.Show()
     Form1.Focus()
@@ -268,7 +249,6 @@
 
   Private Sub btn_update_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_update.Click
     If ValidateInputs() = True Then
-      ResetErrorLabel()
       UpdateObjectState()
 
       UpdateRecordListData()
@@ -286,7 +266,6 @@
 
   Private Sub btn_save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_save.Click
     If ValidateInputs() = True Then
-      ResetErrorLabel()
       UpdateObjectState()
 
       AddNewRecordToRecordList()

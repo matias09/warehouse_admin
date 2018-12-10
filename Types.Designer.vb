@@ -23,7 +23,6 @@ Partial Class Types
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
     Me.btn_clean = New System.Windows.Forms.Button()
-    Me.btn_delete = New System.Windows.Forms.Button()
     Me.btn_update = New System.Windows.Forms.Button()
     Me.btn_prev = New System.Windows.Forms.Button()
     Me.btn_next = New System.Windows.Forms.Button()
@@ -35,32 +34,23 @@ Partial Class Types
     Me.Label1 = New System.Windows.Forms.Label()
     Me.txt_codint = New System.Windows.Forms.TextBox()
     Me.Label3 = New System.Windows.Forms.Label()
-    Me.lab_type_error_msg = New System.Windows.Forms.Label()
     Me.btn_save = New System.Windows.Forms.Button()
     Me.btn_cancel = New System.Windows.Forms.Button()
+    Me.Label2 = New System.Windows.Forms.Label()
     Me.SuspendLayout()
     '
     'btn_clean
     '
-    Me.btn_clean.Location = New System.Drawing.Point(98, 174)
+    Me.btn_clean.Location = New System.Drawing.Point(98, 173)
     Me.btn_clean.Name = "btn_clean"
     Me.btn_clean.Size = New System.Drawing.Size(75, 23)
     Me.btn_clean.TabIndex = 8
     Me.btn_clean.Text = "Limpiar"
     Me.btn_clean.UseVisualStyleBackColor = True
     '
-    'btn_delete
-    '
-    Me.btn_delete.Location = New System.Drawing.Point(193, 174)
-    Me.btn_delete.Name = "btn_delete"
-    Me.btn_delete.Size = New System.Drawing.Size(75, 23)
-    Me.btn_delete.TabIndex = 9
-    Me.btn_delete.Text = "Eliminar"
-    Me.btn_delete.UseVisualStyleBackColor = True
-    '
     'btn_update
     '
-    Me.btn_update.Location = New System.Drawing.Point(4, 174)
+    Me.btn_update.Location = New System.Drawing.Point(4, 173)
     Me.btn_update.Name = "btn_update"
     Me.btn_update.Size = New System.Drawing.Size(75, 23)
     Me.btn_update.TabIndex = 7
@@ -69,7 +59,7 @@ Partial Class Types
     '
     'btn_prev
     '
-    Me.btn_prev.Location = New System.Drawing.Point(193, 136)
+    Me.btn_prev.Location = New System.Drawing.Point(193, 135)
     Me.btn_prev.Name = "btn_prev"
     Me.btn_prev.Size = New System.Drawing.Size(75, 23)
     Me.btn_prev.TabIndex = 6
@@ -78,7 +68,7 @@ Partial Class Types
     '
     'btn_next
     '
-    Me.btn_next.Location = New System.Drawing.Point(98, 136)
+    Me.btn_next.Location = New System.Drawing.Point(98, 135)
     Me.btn_next.Name = "btn_next"
     Me.btn_next.Size = New System.Drawing.Size(75, 23)
     Me.btn_next.TabIndex = 5
@@ -87,7 +77,7 @@ Partial Class Types
     '
     'btn_new
     '
-    Me.btn_new.Location = New System.Drawing.Point(4, 136)
+    Me.btn_new.Location = New System.Drawing.Point(4, 135)
     Me.btn_new.Name = "btn_new"
     Me.btn_new.Size = New System.Drawing.Size(75, 23)
     Me.btn_new.TabIndex = 4
@@ -96,7 +86,7 @@ Partial Class Types
     '
     'btn_exit
     '
-    Me.btn_exit.Location = New System.Drawing.Point(98, 226)
+    Me.btn_exit.Location = New System.Drawing.Point(193, 173)
     Me.btn_exit.Name = "btn_exit"
     Me.btn_exit.Size = New System.Drawing.Size(75, 23)
     Me.btn_exit.TabIndex = 90
@@ -155,21 +145,10 @@ Partial Class Types
     Me.Label3.TabIndex = 63
     Me.Label3.Text = "Codigo Int:"
     '
-    'lab_type_error_msg
-    '
-    Me.lab_type_error_msg.AutoSize = True
-    Me.lab_type_error_msg.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle))
-    Me.lab_type_error_msg.ForeColor = System.Drawing.Color.Crimson
-    Me.lab_type_error_msg.Location = New System.Drawing.Point(92, 110)
-    Me.lab_type_error_msg.Name = "lab_type_error_msg"
-    Me.lab_type_error_msg.Size = New System.Drawing.Size(143, 13)
-    Me.lab_type_error_msg.TabIndex = 64
-    Me.lab_type_error_msg.Text = "Error: Codigo Incorrecto"
-    '
     'btn_save
     '
     Me.btn_save.Enabled = False
-    Me.btn_save.Location = New System.Drawing.Point(98, 136)
+    Me.btn_save.Location = New System.Drawing.Point(98, 135)
     Me.btn_save.Name = "btn_save"
     Me.btn_save.Size = New System.Drawing.Size(75, 23)
     Me.btn_save.TabIndex = 20
@@ -180,7 +159,7 @@ Partial Class Types
     'btn_cancel
     '
     Me.btn_cancel.Enabled = False
-    Me.btn_cancel.Location = New System.Drawing.Point(193, 136)
+    Me.btn_cancel.Location = New System.Drawing.Point(193, 135)
     Me.btn_cancel.Name = "btn_cancel"
     Me.btn_cancel.Size = New System.Drawing.Size(75, 23)
     Me.btn_cancel.TabIndex = 21
@@ -188,14 +167,23 @@ Partial Class Types
     Me.btn_cancel.UseVisualStyleBackColor = True
     Me.btn_cancel.Visible = False
     '
+    'Label2
+    '
+    Me.Label2.AutoSize = True
+    Me.Label2.Location = New System.Drawing.Point(89, 112)
+    Me.Label2.Name = "Label2"
+    Me.Label2.Size = New System.Drawing.Size(112, 13)
+    Me.Label2.TabIndex = 91
+    Me.Label2.Text = "Formato: XXXX-99/X9"
+    '
     'Types
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
     Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-    Me.ClientSize = New System.Drawing.Size(284, 261)
+    Me.ClientSize = New System.Drawing.Size(284, 203)
+    Me.Controls.Add(Me.Label2)
     Me.Controls.Add(Me.btn_cancel)
     Me.Controls.Add(Me.btn_save)
-    Me.Controls.Add(Me.lab_type_error_msg)
     Me.Controls.Add(Me.txt_codint)
     Me.Controls.Add(Me.Label3)
     Me.Controls.Add(Me.drp_types)
@@ -203,7 +191,6 @@ Partial Class Types
     Me.Controls.Add(Me.txt_name)
     Me.Controls.Add(Me.Label1)
     Me.Controls.Add(Me.btn_clean)
-    Me.Controls.Add(Me.btn_delete)
     Me.Controls.Add(Me.btn_update)
     Me.Controls.Add(Me.btn_prev)
     Me.Controls.Add(Me.btn_next)
@@ -214,9 +201,8 @@ Partial Class Types
     Me.ResumeLayout(False)
     Me.PerformLayout()
 
-  End Sub
+End Sub
     Friend WithEvents btn_clean As System.Windows.Forms.Button
-    Friend WithEvents btn_delete As System.Windows.Forms.Button
     Friend WithEvents btn_update As System.Windows.Forms.Button
     Friend WithEvents btn_prev As System.Windows.Forms.Button
     Friend WithEvents btn_next As System.Windows.Forms.Button
@@ -228,7 +214,7 @@ Partial Class Types
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents txt_codint As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
-  Friend WithEvents lab_type_error_msg As System.Windows.Forms.Label
   Friend WithEvents btn_save As System.Windows.Forms.Button
   Friend WithEvents btn_cancel As System.Windows.Forms.Button
+  Friend WithEvents Label2 As System.Windows.Forms.Label
 End Class

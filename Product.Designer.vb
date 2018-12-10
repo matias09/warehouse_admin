@@ -23,7 +23,6 @@ Partial Class Product
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
     Me.components = New System.ComponentModel.Container()
-    Me.lab_error_msg = New System.Windows.Forms.Label()
     Me.Label3 = New System.Windows.Forms.Label()
     Me.txt_name = New System.Windows.Forms.TextBox()
     Me.Label1 = New System.Windows.Forms.Label()
@@ -52,17 +51,6 @@ Partial Class Product
     CType(Me.dat_stock, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.ProductBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.SuspendLayout()
-    '
-    'lab_error_msg
-    '
-    Me.lab_error_msg.AutoSize = True
-    Me.lab_error_msg.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle))
-    Me.lab_error_msg.ForeColor = System.Drawing.Color.Crimson
-    Me.lab_error_msg.Location = New System.Drawing.Point(98, 136)
-    Me.lab_error_msg.Name = "lab_error_msg"
-    Me.lab_error_msg.Size = New System.Drawing.Size(89, 13)
-    Me.lab_error_msg.TabIndex = 101
-    Me.lab_error_msg.Text = "Error Msg . . . "
     '
     'Label3
     '
@@ -321,7 +309,6 @@ Partial Class Product
     Me.Controls.Add(Me.btn_save)
     Me.Controls.Add(Me.btn_prev)
     Me.Controls.Add(Me.btn_next)
-    Me.Controls.Add(Me.lab_error_msg)
     Me.Controls.Add(Me.Label3)
     Me.Controls.Add(Me.drp_products)
     Me.Controls.Add(Me.Label6)
@@ -338,7 +325,6 @@ Partial Class Product
     Me.PerformLayout()
 
 End Sub
-  Friend WithEvents lab_error_msg As System.Windows.Forms.Label
   Friend WithEvents Label3 As System.Windows.Forms.Label
   Friend WithEvents txt_name As System.Windows.Forms.TextBox
   Friend WithEvents Label1 As System.Windows.Forms.Label
