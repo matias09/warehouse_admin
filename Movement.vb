@@ -178,8 +178,6 @@
       id = _mMovementsRecordList.Item(_mMovementsRecordList.Count - 1)("id") + 1
     End If
 
-Console.WriteLine("id : " & id)
-
     fields("id") = id
     fields("id_product") = _mProductsValues.Keys(drp_products.SelectedIndex)
     fields("id_sector") = _mSectorsValues.Keys(drp_sectors.SelectedIndex)
@@ -192,9 +190,7 @@ Console.WriteLine("id : " & id)
       fields("operation") = "B"
     End If
 
-      Console.WriteLine("Before save date : " & date_time_picker.Value.ToUniversalTime())
-      _mMovementsDao.insert(fields)
-
+    _mMovementsDao.ExecuteInsertQuery(fields)
     _mMovementsRecordList.Add(fields)
   End Sub
 

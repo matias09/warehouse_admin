@@ -112,7 +112,7 @@ Public NotInheritable Class MovementDao
     End While
   End Sub
 
-  Public Sub insert(ByRef data As Hashtable)
+  Public Sub ExecuteInsertQuery(ByRef data As Hashtable)
     Dim sql As String = "INSERT INTO movements VALUES(@id, @id_product, @id_sector, @count, @operation, @mov_date)"
     Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
 
@@ -125,11 +125,11 @@ Public NotInheritable Class MovementDao
     cd.Parameters.Add("@operation", OleDb.OleDbType.Char).Value = data("operation")
     cd.Parameters.Add("@mov_date", OleDb.OleDbType.Date).Value = data("mov_date")
 
-    cd.ExecuteReader()
-    cd.Dispose()
-
     registerPos = dt.Rows.Count - 1
     SaveDataInRecord()
+
+    cd.ExecuteReader()
+    cd.Dispose()
   End Sub
 
   Public Sub GetById(ByRef id As Integer, ByRef rd As OleDb.OleDbDataReader)
