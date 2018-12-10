@@ -43,7 +43,7 @@
     rad_remove.Enabled = state
 
     ' Text Buttons Controllers
-    txt_amount.Enabled = state
+    txt_count.Enabled = state
 
     ' Date Time Picker
     date_time_picker.Enabled = state
@@ -123,21 +123,10 @@
         Dim p_id As Integer = _mMovementsRecordList.Item(_mActMovementsRegPos)("id_product")
         Dim s_id As Integer = _mMovementsRecordList.Item(_mActMovementsRegPos)("id_sector")
 
-       'Console.WriteLine("------------------------------------------------------------")
-       'Console.WriteLine("id : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("id"))
-       'Console.WriteLine("id_product : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("id_product"))
-       'Console.WriteLine("product : " & _mProductsValues.Item(p_id))
-       'Console.WriteLine("id_sector : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("id_sector"))
-       'Console.WriteLine("sector : " & _mSectorsValues.Item(s_id))
-       'Console.WriteLine("count : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("count"))
-       'Console.WriteLine("operation : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("operation"))
-       'Console.WriteLine("move_date : " & _mMovementsRecordList.Item(_mActMovementsRegPos)("mov_date"))
-       'Console.WriteLine("------------------------------------------------------------")
-
         date_time_picker.Value = _mMovementsRecordList.Item(_mActMovementsRegPos)("mov_date")
         drp_products.SelectedItem = _mProductsValues.Item(p_id)
         drp_sectors.SelectedItem = _mSectorsValues.Item(s_id)
-        txt_amount.Text = _mMovementsRecordList.Item(_mActMovementsRegPos)("count")
+        txt_count.Text = _mMovementsRecordList.Item(_mActMovementsRegPos)("count")
 
         If _mMovementsRecordList.Item(_mActMovementsRegPos)("operation") = "A" Then
           rad_add.Checked = True
@@ -173,25 +162,38 @@
   Private Sub AddNewRecordToRecordList()
     Dim fields As Hashtable = New Hashtable()
     Dim id As Integer = 1
+    Dim id_product As Integer = _mProductsValues.Keys(drp_products.SelectedIndex)
+    Dim id_sector As Integer = _mSectorsValues.Keys(drp_sectors.SelectedIndex)
+    Dim count As Integer = txt_count.Text
 
     If _mMovementsRecordList.Count <> 0 Then
       id = _mMovementsRecordList.Item(_mMovementsRecordList.Count - 1)("id") + 1
     End If
 
     fields("id") = id
-    fields("id_product") = _mProductsValues.Keys(drp_products.SelectedIndex)
-    fields("id_sector") = _mSectorsValues.Keys(drp_sectors.SelectedIndex)
-    fields("count") = txt_amount.Text
+    fields("id_product") = id_product
+    fields("id_sector") = id_sector
+    fields("count") = count
     fields("mov_date") = date_time_picker.Value.ToUniversalTime()
 
     If (rad_add.Checked = True) Then
       fields("operation") = "A"
+
+      _mMovementsDao.InsertNewRecord(fields)
+      _mMovementsRecordList.Add(fields)
     Else
       fields("operation") = "B"
-    End If
 
-    _mMovementsDao.ExecuteInsertQuery(fields)
-    _mMovementsRecordList.Add(fields)
+      ' Checks stock count
+    ' Dim stock As Integer = _mMovementsDao.GetProductSectorStockcount(id_product, id_sector)
+
+    ' If stock = count Then
+    '   ' Deletes record from Product Sector
+    '   _mMovementsDao.DeleteProductSectorRow()
+    '   _mMovementsDao.InsertNewRecord(fields)
+    '   _mMovementsRecordList.Add(fields)
+    ' End If
+    End If
   End Sub
 
   Private Sub ResetErrorLabel()
@@ -205,7 +207,7 @@
 
   Private Function ValidateInputs() As Boolean
     ''Console.WriteLine("------ Movements: Inside ValidateInputs() ------")
-    If _mUtils.CheckExpressionByPatternMatching(txt_amount.Text, "^[0-9]+$") = False Then
+    If _mUtils.CheckExpressionByPatternMatching(txt_count.Text, "^[0-9]+$") = False Then
       Console.WriteLine("------ Movements: Inside ValidateInputs() -> IF 1 ------")
       ShowErrorLabel("Error: Stock Invalido")
       Return False
@@ -217,7 +219,7 @@
   Private Sub CustomResetControls()
     drp_products.SelectedIndex = 0
     drp_sectors.SelectedIndex = 0
-    txt_amount.Text = 0
+    txt_count.Text = 0
     rad_add.Checked = True
     rad_remove.Checked = False
   End Sub

@@ -1,5 +1,6 @@
 Public NotInheritable Class MovementDao
   Const TABLE_NAME As String = "movements"
+  Const TABLE_NAME_PROD_SECTORS As String = "prod_sectors"
 
   Private recordList As ArrayList
   Private fieldsList As Hashtable
@@ -71,7 +72,6 @@ Public NotInheritable Class MovementDao
 
     dr = dt.Rows(registerPos)
     SaveDataInRecord()
-    dataBaseManager.SubmmitChanges(da, dt)
   End Sub
 
   ' Get Functions
@@ -101,46 +101,137 @@ Public NotInheritable Class MovementDao
     Dim i As Integer = 0
     Dim fieldsCount As Integer = 0
 
-    Console.WriteLine(" Save Data in Record : register pos : " & registerPos)
+    Console.WriteLine(" -- MATIAS -- Save Data in Record : register pos : " & registerPos)
 
     fieldsCount = fieldsList.Count
     While i < fieldsCount
-      Console.WriteLine("MovementDao.vb:SaveDataInRecord() Element {1} = {0}", recordList.Item(registerPos)(fieldsList.Keys(i)), fieldsList.Keys(i))
+'      Console.WriteLine("MovementDao.vb:SaveDataInRecord() Element {1} = {0}", recordList.Item(registerPos)(fieldsList.Keys(i)), fieldsList.Keys(i))
 
       dr(fieldsList.Keys(i)) = recordList.Item(registerPos)(fieldsList.Keys(i))
       i += 1
     End While
   End Sub
 
-  Public Sub ExecuteInsertQuery(ByRef data As Hashtable)
-    Dim sql As String = "INSERT INTO movements VALUES(@id, @id_product, @id_sector, @count, @operation, @mov_date)"
+  Public Sub InsertNewRecord(ByRef data As Hashtable)
+
+    Console.WriteLine("  -- MATIAS -- InsertNewRecord() -- ")
+
+    Dim stock As Integer = 0
+    Dim id_product As Integer = data("id_product")
+    Dim id_sector As Integer = data("id_sector")
+    Dim sql As String = ""
     Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
 
+    sql = "INSERT INTO " + TABLE_NAME + " VALUES(@id, @id_product, @id_sector, @count, @operation, @mov_date)"
+
+    ' Insert into Movements
     Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
-    cd.CommandText = sql
     cd.Parameters.Add("@id", OleDb.OleDbType.Integer).Value = data("id")
-    cd.Parameters.Add("@id_product", OleDb.OleDbType.Integer).Value = data("id_product")
-    cd.Parameters.Add("@id_sector", OleDb.OleDbType.Integer).Value = data("id_sector")
+    cd.Parameters.Add("@id_product", OleDb.OleDbType.Integer).Value = id_product
+    cd.Parameters.Add("@id_sector", OleDb.OleDbType.Integer).Value = id_sector
     cd.Parameters.Add("@count", OleDb.OleDbType.Integer).Value = data("count")
     cd.Parameters.Add("@operation", OleDb.OleDbType.Char).Value = data("operation")
     cd.Parameters.Add("@mov_date", OleDb.OleDbType.Date).Value = data("mov_date")
 
-    registerPos = dt.Rows.Count - 1
-    SaveDataInRecord()
-
     cd.ExecuteReader()
+    cd.Dispose()
+
+    ' Product Sectors
+    stock = GetProductSectorStock(id_product, id_sector, dbConn)
+    If (stock > 0) Then
+      stock += data("count")
+      UpdateProdSectorsTable(stock, id_product, id_sector, dbConn)
+    Else
+      InsertIntoProductSectorTable(data("count"), id_product, id_sector, dbConn)
+    End If
+  End Sub
+
+  Private Sub InsertIntoProductSectorTable(ByRef stock As Integer, ByRef id_product As Integer, ByRef id_sector As Integer, ByRef dbConn As OleDb.OleDbConnection)
+
+    Console.WriteLine("-- MATIAS -- InsertIntoProductSectorTable() -- ")
+
+   Dim id As Integer = 1
+   Dim sql As String = ""
+   Dim rd As OleDb.OleDbDataReader = Nothing
+
+   sql = "SELECT id FROM " + TABLE_NAME_PROD_SECTORS + " ORDER BY id DESC"
+   Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
+
+   rd = cd.ExecuteReader()
+   If rd.HasRows > 0 Then
+     id = rd.Item("id")
+   End If
+   cd.Dispose()
+
+    sql = "INSERT INTO " + TABLE_NAME_PROD_SECTORS + " VALUES(@id, @id_product, @id_sector, @stock)"
+
+    ' Insert into Movements
+    cd = New OleDb.OleDbCommand(sql, dbConn)
+    cd.Parameters.Add("@id", OleDb.OleDbType.Integer).Value = id
+    cd.Parameters.Add("@id_product", OleDb.OleDbType.Integer).Value = id_product
+    cd.Parameters.Add("@id_sector", OleDb.OleDbType.Integer).Value = id_sector
+    cd.Parameters.Add("@stock", OleDb.OleDbType.Integer).Value = stock
+
+    'cd.ExecuteReader()
+    'cd.Dispose()
+  End Sub
+
+  Private Sub UpdateProdSectorsTable(ByRef stock As Integer, ByRef id_product As Integer, ByRef id_sector As Integer, ByRef dbConn As OleDb.OleDbConnection)
+
+    Console.WriteLine("-- MATIAS -- UpdateProdSectorsTable() -- ")
+
+    Dim sql As String = ""
+    sql = "UPDATE " + TABLE_NAME_PROD_SECTORS +
+          " SET stock = @stock " +
+          " WHERE id_product = @id_product AND id_sector = @id_sector"
+
+    ' Insert into Movements
+    Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
+    cd.Parameters.Add("@stock", OleDb.OleDbType.Integer).Value = stock
+    cd.Parameters.Add("@id_product", OleDb.OleDbType.Integer).Value = id_product
+    cd.Parameters.Add("@id_sector", OleDb.OleDbType.Integer).Value = id_sector
+
+    cd.ExecuteNonQuery()
     cd.Dispose()
   End Sub
 
-  Public Sub GetById(ByRef id As Integer, ByRef rd As OleDb.OleDbDataReader)
+  Private Function GetProductSectorStock(ByRef id_product As Integer, ByRef id_sector As Integer, ByRef dbConn As OleDb.OleDbConnection) As Integer
+
+    Console.WriteLine("-- MATIAS -- GetProductSectorStock() -- ")
+
+    Dim stock As Integer = 0
     Dim sql As String
+    Dim rd As OleDb.OleDbDataReader = Nothing
 
-    sql = " SELECT *" +
-          " FROM movements p " +
-          " WHERE p.id = " & id
-    dataBaseManager.ExecuteQuery(sql, rd)
+    sql = "SELECT stock FROM " + TABLE_NAME_PROD_SECTORS +
+          " WHERE id_product = @id_product AND id_sector = @id_sector"
 
-    Console.WriteLine("sql : " & sql)
-  End Sub
+    Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
+    cd.Parameters.Add("@id_product", OleDb.OleDbType.Integer).Value = id_product
+    cd.Parameters.Add("@id_sector", OleDb.OleDbType.Integer).Value = id_sector
+
+    rd = cd.ExecuteReader()
+
+      Console.WriteLine("-- MATIAS -- hasRows:  " & rd.HasRows)
+    If rd.HasRows = True Then
+     While rd.Read()
+       stock += rd.Item("stock")
+     End While
+     rd.Close()
+
+      Console.WriteLine("-- MATIAS -- stock:  " & stock)
+      Return stock
+    Else
+      Return 0
+    End If
+
+    cd.Dispose()
+  End Function
 End Class
 
+
+  ' While rd.Read()
+  '   dat_stock.Rows.Add(rd.Item("sector_name"), rd.Item("sector_hall"), rd.Item("stock"))
+  '   _mStock += rd.Item("stock")
+  ' End While
+  ' rd.Close()

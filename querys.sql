@@ -42,6 +42,10 @@ UPDATE movements SET id_sector = 58 WHERE id = 7;
 
 
 
+update prod_sectors
+   set 
+
+
 -----------------------------------------------------------------------------------------------------------
 -- general
   -- reset id column

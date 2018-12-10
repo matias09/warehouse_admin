@@ -30,7 +30,7 @@ Partial Class Movement
     Me.drp_movements = New System.Windows.Forms.ComboBox()
     Me.drp_products = New System.Windows.Forms.ComboBox()
     Me.drp_sectors = New System.Windows.Forms.ComboBox()
-    Me.txt_amount = New System.Windows.Forms.TextBox()
+    Me.txt_count = New System.Windows.Forms.TextBox()
     Me.rad_add = New System.Windows.Forms.RadioButton()
     Me.rad_remove = New System.Windows.Forms.RadioButton()
     Me.Label4 = New System.Windows.Forms.Label()
@@ -118,13 +118,13 @@ Partial Class Movement
     Me.drp_sectors.Size = New System.Drawing.Size(178, 21)
     Me.drp_sectors.TabIndex = 4
     '
-    'txt_amount
+    'txt_count
     '
-    Me.txt_amount.Enabled = False
-    Me.txt_amount.Location = New System.Drawing.Point(88, 125)
-    Me.txt_amount.Name = "txt_amount"
-    Me.txt_amount.Size = New System.Drawing.Size(178, 20)
-    Me.txt_amount.TabIndex = 5
+    Me.txt_count.Enabled = False
+    Me.txt_count.Location = New System.Drawing.Point(88, 125)
+    Me.txt_count.Name = "txt_count"
+    Me.txt_count.Size = New System.Drawing.Size(178, 20)
+    Me.txt_count.TabIndex = 5
     '
     'rad_add
     '
@@ -266,7 +266,7 @@ Partial Class Movement
     Me.Controls.Add(Me.Label4)
     Me.Controls.Add(Me.rad_remove)
     Me.Controls.Add(Me.rad_add)
-    Me.Controls.Add(Me.txt_amount)
+    Me.Controls.Add(Me.txt_count)
     Me.Controls.Add(Me.drp_sectors)
     Me.Controls.Add(Me.drp_products)
     Me.Controls.Add(Me.drp_movements)
@@ -289,7 +289,7 @@ End Sub
     Friend WithEvents drp_movements As System.Windows.Forms.ComboBox
     Friend WithEvents drp_products As System.Windows.Forms.ComboBox
     Friend WithEvents drp_sectors As System.Windows.Forms.ComboBox
-    Friend WithEvents txt_amount As System.Windows.Forms.TextBox
+    Friend WithEvents txt_count As System.Windows.Forms.TextBox
     Friend WithEvents rad_add As System.Windows.Forms.RadioButton
     Friend WithEvents rad_remove As System.Windows.Forms.RadioButton
     Friend WithEvents Label4 As System.Windows.Forms.Label
