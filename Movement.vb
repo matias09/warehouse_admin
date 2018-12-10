@@ -114,7 +114,6 @@
 
   Private Sub UpdateControls()
     _mUtils.ResetControls(Me)
-    ResetErrorLabel()
 
     If (_mMovementsRecordList.Count <> 0) Then
       If (IsDBNull(_mMovementsRecordList.Item(_mActMovementsRegPos)("id")) <> True) Then
@@ -166,6 +165,9 @@
     Dim id_sector As Integer = _mSectorsValues.Keys(drp_sectors.SelectedIndex)
     Dim count As Integer = txt_count.Text
 
+    ' Checks stock count
+    Dim stock As Integer = _mMovementsDao.GetProductSectorStock(id_product, id_sector)
+
     If _mMovementsRecordList.Count <> 0 Then
       id = _mMovementsRecordList.Item(_mMovementsRecordList.Count - 1)("id") + 1
     End If
@@ -180,36 +182,50 @@
       fields("operation") = "A"
 
       _mMovementsDao.InsertNewRecord(fields)
+
+      If (stock > 0) Then
+        _mMovementsDao.UpdateStockOnProductSectorTable((stock + count), id_product, id_sector)
+      Else
+        _mMovementsDao.InsertProductSectorRow(count, id_product, id_sector)
+      End If
+
+      ' Adds the stock amount from Product Table
+      _mMovementsDao.UpdateProductStock(count, id_product, id_sector)
+
       _mMovementsRecordList.Add(fields)
     Else
       fields("operation") = "B"
 
-      ' Checks stock count
-    ' Dim stock As Integer = _mMovementsDao.GetProductSectorStockcount(id_product, id_sector)
+      Console.WriteLine("MATIAS: AddNewRecordToRecordList() -- old_stock : " & stock)
+      Console.WriteLine("MATIAS: AddNewRecordToRecordList() -- count : " & count)
+      If stock = count Then
+        ' Deletes record from Product Sector
+        _mMovementsDao.DeleteProductSectorRowByIds(id_product, id_sector)
 
-    ' If stock = count Then
-    '   ' Deletes record from Product Sector
-    '   _mMovementsDao.DeleteProductSectorRow()
-    '   _mMovementsDao.InsertNewRecord(fields)
-    '   _mMovementsRecordList.Add(fields)
-    ' End If
+        ' Removes the stock amount from Product Table
+        _mMovementsDao.UpdateProductStock((count * (-1)), id_product, id_sector)
+
+        _mMovementsDao.InsertNewRecord(fields)
+        _mMovementsRecordList.Add(fields)
+      ElseIf count < stock Then
+        ' Removes the stock amout from Product Sector Table
+        _mMovementsDao.UpdateStockOnProductSectorTable((stock - count), id_product, id_sector)
+
+        ' Removes the stock amout from Product Table
+        _mMovementsDao.UpdateProductStock((count * (-1)), id_product, id_sector)
+
+        _mMovementsDao.InsertNewRecord(fields)
+        _mMovementsRecordList.Add(fields)
+      Else
+        MsgBox("ERROR: La cantidad de Stock, supera la cantidad del sector.")
+      End If
     End If
   End Sub
 
-  Private Sub ResetErrorLabel()
-    lab_error_msg.Visible = False
-  End Sub
-
-  Private Sub ShowErrorLabel(ByRef msg As String)
-    lab_error_msg.Text = msg
-    lab_error_msg.Visible = True
-  End Sub
-
   Private Function ValidateInputs() As Boolean
-    ''Console.WriteLine("------ Movements: Inside ValidateInputs() ------")
     If _mUtils.CheckExpressionByPatternMatching(txt_count.Text, "^[0-9]+$") = False Then
       Console.WriteLine("------ Movements: Inside ValidateInputs() -> IF 1 ------")
-      ShowErrorLabel("Error: Stock Invalido")
+      MsgBox("Error: El Stock contiene caracteres invalidos")
       Return False
     End If
 
@@ -242,7 +258,6 @@
 
     _mUtils = New Utils()
 
-    ResetErrorLabel()
     FillProductsDropDownMenu()
     FillSectorsDropDownMenu()
 
@@ -263,7 +278,6 @@
 
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
     'Console.WriteLine("Movements - I press Exit button")
-    ResetErrorLabel()
     Me.Hide()
     Form1.Show()
     Form1.Focus()
@@ -271,14 +285,11 @@
 
   Private Sub btn_save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_save.Click
     If ValidateInputs() = True Then
-      ResetErrorLabel()
 
       AddNewRecordToRecordList()
       _mMovementsDao.SetRecordList(_mMovementsRecordList)
 
       UpdateMovementsMenu()
-
-      '_mMovementsDao.SaveRecord(True)
 
       ' Back To Normal Menu Behavior
       SwitchOnOffControlSaveButtons(False)

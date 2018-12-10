@@ -41,7 +41,6 @@ Partial Class Movement
     Me.btn_prev = New System.Windows.Forms.Button()
     Me.btn_next = New System.Windows.Forms.Button()
     Me.btn_delete = New System.Windows.Forms.Button()
-    Me.lab_error_msg = New System.Windows.Forms.Label()
     Me.date_time_picker = New System.Windows.Forms.DateTimePicker()
     Me.SuspendLayout()
     '
@@ -162,7 +161,7 @@ Partial Class Movement
     'btn_cancel
     '
     Me.btn_cancel.Enabled = False
-    Me.btn_cancel.Location = New System.Drawing.Point(191, 231)
+    Me.btn_cancel.Location = New System.Drawing.Point(191, 189)
     Me.btn_cancel.Name = "btn_cancel"
     Me.btn_cancel.Size = New System.Drawing.Size(75, 23)
     Me.btn_cancel.TabIndex = 60
@@ -173,7 +172,7 @@ Partial Class Movement
     'btn_save
     '
     Me.btn_save.Enabled = False
-    Me.btn_save.Location = New System.Drawing.Point(104, 231)
+    Me.btn_save.Location = New System.Drawing.Point(104, 189)
     Me.btn_save.Name = "btn_save"
     Me.btn_save.Size = New System.Drawing.Size(75, 23)
     Me.btn_save.TabIndex = 50
@@ -183,7 +182,7 @@ Partial Class Movement
     '
     'btn_new
     '
-    Me.btn_new.Location = New System.Drawing.Point(18, 231)
+    Me.btn_new.Location = New System.Drawing.Point(18, 189)
     Me.btn_new.Name = "btn_new"
     Me.btn_new.Size = New System.Drawing.Size(75, 23)
     Me.btn_new.TabIndex = 20
@@ -192,7 +191,7 @@ Partial Class Movement
     '
     'btn_exit
     '
-    Me.btn_exit.Location = New System.Drawing.Point(191, 269)
+    Me.btn_exit.Location = New System.Drawing.Point(191, 227)
     Me.btn_exit.Name = "btn_exit"
     Me.btn_exit.Size = New System.Drawing.Size(75, 23)
     Me.btn_exit.TabIndex = 80
@@ -201,7 +200,7 @@ Partial Class Movement
     '
     'btn_prev
     '
-    Me.btn_prev.Location = New System.Drawing.Point(191, 231)
+    Me.btn_prev.Location = New System.Drawing.Point(191, 189)
     Me.btn_prev.Name = "btn_prev"
     Me.btn_prev.Size = New System.Drawing.Size(75, 23)
     Me.btn_prev.TabIndex = 40
@@ -210,7 +209,7 @@ Partial Class Movement
     '
     'btn_next
     '
-    Me.btn_next.Location = New System.Drawing.Point(104, 231)
+    Me.btn_next.Location = New System.Drawing.Point(104, 189)
     Me.btn_next.Name = "btn_next"
     Me.btn_next.Size = New System.Drawing.Size(75, 23)
     Me.btn_next.TabIndex = 30
@@ -219,23 +218,12 @@ Partial Class Movement
     '
     'btn_delete
     '
-    Me.btn_delete.Location = New System.Drawing.Point(18, 269)
+    Me.btn_delete.Location = New System.Drawing.Point(18, 227)
     Me.btn_delete.Name = "btn_delete"
     Me.btn_delete.Size = New System.Drawing.Size(75, 23)
     Me.btn_delete.TabIndex = 70
     Me.btn_delete.Text = "Eliminar"
     Me.btn_delete.UseVisualStyleBackColor = True
-    '
-    'lab_error_msg
-    '
-    Me.lab_error_msg.AutoSize = True
-    Me.lab_error_msg.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle))
-    Me.lab_error_msg.ForeColor = System.Drawing.Color.Crimson
-    Me.lab_error_msg.Location = New System.Drawing.Point(15, 185)
-    Me.lab_error_msg.Name = "lab_error_msg"
-    Me.lab_error_msg.Size = New System.Drawing.Size(89, 13)
-    Me.lab_error_msg.TabIndex = 110
-    Me.lab_error_msg.Text = "Error Msg . . . "
     '
     'date_time_picker
     '
@@ -253,11 +241,10 @@ Partial Class Movement
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
     Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-    Me.ClientSize = New System.Drawing.Size(276, 298)
+    Me.ClientSize = New System.Drawing.Size(276, 258)
     Me.Controls.Add(Me.btn_cancel)
     Me.Controls.Add(Me.btn_save)
     Me.Controls.Add(Me.date_time_picker)
-    Me.Controls.Add(Me.lab_error_msg)
     Me.Controls.Add(Me.btn_prev)
     Me.Controls.Add(Me.btn_next)
     Me.Controls.Add(Me.btn_delete)
@@ -300,6 +287,5 @@ End Sub
     Friend WithEvents btn_prev As System.Windows.Forms.Button
     Friend WithEvents btn_next As System.Windows.Forms.Button
     Friend WithEvents btn_delete As System.Windows.Forms.Button
-    Friend WithEvents lab_error_msg As System.Windows.Forms.Label
     Friend WithEvents date_time_picker As System.Windows.Forms.DateTimePicker
 End Class

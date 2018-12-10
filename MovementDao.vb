@@ -97,6 +97,62 @@ Public NotInheritable Class MovementDao
     registerPos = newRegisterPos
   End Sub
 
+  Public Function GetProductSectorStock(ByRef id_product As Integer, ByRef id_sector As Integer) As Integer
+
+    Console.WriteLine("-- MATIAS -- GetProductSectorStock() -- ")
+
+    Dim stock As Integer = 0
+    Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
+
+    ' Product Sectors
+    stock = GetProductSectorStock(id_product, id_sector, dbConn)
+
+    Return stock
+  End Function
+
+  Public Sub UpdateProductStock(ByRef stock As Integer, ByRef id_product As Integer, ByRef id_sector As Integer)
+
+    Console.WriteLine("-- MATIAS -- UpdateProductStock() -- ")
+
+    Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
+
+    ' Product
+    UpdateStockOnProductTable(stock, id_product, dbConn)
+  End Sub
+
+  Public Sub DeleteProductSectorRowByIds(ByRef id_product As Integer, ByRef id_sector As Integer)
+
+    Console.WriteLine("-- MATIAS -- DeleteProductSectorRowByIds() -- ")
+
+    Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
+    Dim sql As String = ""
+
+    sql = "DELETE FROM " + TABLE_NAME_PROD_SECTORS +
+          " WHERE id_product = @id_product AND id_sector = @id_sector"
+
+    ' Insert into Movements
+    Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
+    cd.Parameters.Add("@id_product", OleDb.OleDbType.Integer).Value = id_product
+    cd.Parameters.Add("@id_sector", OleDb.OleDbType.Integer).Value = id_sector
+
+    cd.ExecuteNonQuery()
+    cd.Dispose()
+  End Sub
+
+  Public Sub UpdateStockOnProductSectorTable(ByRef stock As Integer, ByRef id_product As Integer, ByRef id_sector As Integer)
+    Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
+
+    ' Product Sectors
+    UpdateProdSectorsTable(stock, id_product, id_sector, dbConn)
+  End Sub
+
+  Public Sub InsertProductSectorRow(ByRef stock As Integer, ByRef id_product As Integer, ByRef id_sector As Integer)
+    Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
+
+    ' Insert on Product Sector table
+    InsertIntoProductSectorTable(stock, id_product, id_sector, dbConn)
+  End Sub
+
   ' Privates
   Private Sub SaveDataInRecord()
     Dim i As Integer = 0
@@ -136,18 +192,6 @@ Public NotInheritable Class MovementDao
 
     cd.ExecuteReader()
     cd.Dispose()
-
-    ' Product Sectors
-    stock = GetProductSectorStock(id_product, id_sector, dbConn)
-    If (stock > 0) Then
-      stock += data("count")
-      UpdateProdSectorsTable(stock, id_product, id_sector, dbConn)
-    Else
-      InsertIntoProductSectorTable(data("count"), id_product, id_sector, dbConn)
-    End If
-
-    ' Product
-    UpdateStockOnProductTable(data("count"), id_product, dbConn)
   End Sub
 
   Private Sub InsertIntoProductSectorTable(ByRef stock As Integer, ByRef id_product As Integer, ByRef id_sector As Integer, ByRef dbConn As OleDb.OleDbConnection)
@@ -193,7 +237,10 @@ Public NotInheritable Class MovementDao
           " SET stock = @stock " +
           " WHERE id_product = @id_product AND id_sector = @id_sector"
 
-    ' Insert into Movements
+
+    Console.WriteLine("-- MATIAS -- UpdateProdSectorsTable() -- stock : " & stock)
+
+    ' Updates Prod Sectors
     Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
     cd.Parameters.Add("@stock", OleDb.OleDbType.Integer).Value = stock
     cd.Parameters.Add("@id_product", OleDb.OleDbType.Integer).Value = id_product
@@ -230,6 +277,10 @@ Public NotInheritable Class MovementDao
           " SET stock = @stock " +
           " WHERE id = @id_product"
 
+    Console.WriteLine("-- MATIAS -- UpdateStockOnProductTable() -- old_stock : " & old_stock)
+    Console.WriteLine("-- MATIAS -- UpdateStockOnProductTable() -- stock : " & stock)
+    Console.WriteLine("-- MATIAS -- UpdateStockOnProductTable() -- new_stock : " & stock + old_stock)
+
     ' Insert into Movements
     cd = New OleDb.OleDbCommand(sql, dbConn)
     cd.Parameters.Add("@stock", OleDb.OleDbType.Integer).Value = stock + old_stock
@@ -257,7 +308,7 @@ Public NotInheritable Class MovementDao
 
     rd = cd.ExecuteReader()
 
-    Console.WriteLine("-- MATIAS -- hasRows:  " & rd.HasRows)
+  '  Console.WriteLine("-- MATIAS -- hasRows:  " & rd.HasRows)
     If rd.HasRows = True Then
      While rd.Read()
        stock += rd.Item("stock")
