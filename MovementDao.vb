@@ -1,5 +1,6 @@
 Public NotInheritable Class MovementDao
   Const TABLE_NAME As String = "movements"
+  Const TABLE_NAME_PRODUCTS As String = "products"
   Const TABLE_NAME_PROD_SECTORS As String = "prod_sectors"
 
   Private recordList As ArrayList
@@ -144,6 +145,9 @@ Public NotInheritable Class MovementDao
     Else
       InsertIntoProductSectorTable(data("count"), id_product, id_sector, dbConn)
     End If
+
+    ' Product
+    UpdateStockOnProductTable(data("count"), id_product, dbConn)
   End Sub
 
   Private Sub InsertIntoProductSectorTable(ByRef stock As Integer, ByRef id_product As Integer, ByRef id_sector As Integer, ByRef dbConn As OleDb.OleDbConnection)
@@ -198,6 +202,43 @@ Public NotInheritable Class MovementDao
     cd.ExecuteNonQuery()
     cd.Dispose()
   End Sub
+
+  Private Sub UpdateStockOnProductTable(ByRef stock As Integer, ByRef id_product As Integer, ByRef dbConn As OleDb.OleDbConnection)
+
+    Console.WriteLine("-- MATIAS -- UpdateStockOnProductTable() -- ")
+
+    Dim sql As String = ""
+    Dim old_stock As Integer = 0
+
+    sql = "SELECT stock FROM " + TABLE_NAME_PRODUCTS +
+          " WHERE id = @id_product"
+
+    Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
+    cd.Parameters.Add("@id_product", OleDb.OleDbType.Integer).Value = id_product
+
+    rd = cd.ExecuteReader()
+    If rd.HasRows = True Then
+      While rd.Read()
+       old_stock += rd.Item("stock")
+      End While
+
+      rd.Close()
+    End If
+    cd.Dispose()
+
+    sql = "UPDATE " + TABLE_NAME_PRODUCTS +
+          " SET stock = @stock " +
+          " WHERE id = @id_product"
+
+    ' Insert into Movements
+    cd = New OleDb.OleDbCommand(sql, dbConn)
+    cd.Parameters.Add("@stock", OleDb.OleDbType.Integer).Value = stock + old_stock
+    cd.Parameters.Add("@id_product", OleDb.OleDbType.Integer).Value = id_product
+
+    cd.ExecuteNonQuery()
+    cd.Dispose()
+  End Sub
+
 
   Private Function GetProductSectorStock(ByRef id_product As Integer, ByRef id_sector As Integer, ByRef dbConn As OleDb.OleDbConnection) As Integer
 
