@@ -162,6 +162,7 @@ Public NotInheritable Class MovementDao
      While rd.Read()
        id = rd.Item("id") + 1
      End While
+
      rd.Close()
    End If
    cd.Dispose()
@@ -229,10 +230,3 @@ Public NotInheritable Class MovementDao
     cd.Dispose()
   End Function
 End Class
-
-
-  ' While rd.Read()
-  '   dat_stock.Rows.Add(rd.Item("sector_name"), rd.Item("sector_hall"), rd.Item("stock"))
-  '   _mStock += rd.Item("stock")
-  ' End While
-  ' rd.Close()
