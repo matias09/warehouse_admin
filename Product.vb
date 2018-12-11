@@ -158,8 +158,14 @@
 
   Private Sub AddNewRecordToRecordList()
     Dim fields As Hashtable = New Hashtable()
+    Dim itemsCount As Integer = _mProductsRecordList.Count
+    Dim id As Integer = 1
 
-    fields("id") = 0
+    If (itemsCount > 0) Then
+      id = _mProductsRecordList(itemsCount - 1)("id") + 1
+    End If
+
+    fields("id") = id
     fields("pro_name") = txt_name.Text
     fields("id_type") = _mTypesValues.Keys(drp_types.SelectedIndex)
     fields("stock") = lab_stock.Text
@@ -179,7 +185,6 @@
   End Function
 
   Private Sub CustomResetControls()
-    drp_types.SelectedIndex = 0
     lab_stock.Text = 0
     txt_name.Text = ""
     rad_state_a.Checked = True
@@ -215,7 +220,13 @@
 
     _mUtils = New Utils()
 
-    FillTypesDropDownMenu()
+    If (_mTypesRecordList.Count > 0) Then
+      FillTypesDropDownMenu()
+    Else
+      btn_new.Enabled = False
+      btn_update.Enabled = False
+      MsgBox("Mensaje: Debe Cargar Tipo de Productos antes de cargar Productos.")
+    End If
 
     UpdateControls()
     UpdateProductsMenu()

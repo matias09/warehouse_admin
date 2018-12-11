@@ -43,8 +43,8 @@
   Private Sub UpdateControls()
     _mUtils.ResetControls(Me)
 
-    Console.WriteLine(" UpdateControls : _mActSectorsRegPos : " & _mActSectorsRegPos)
-    Console.WriteLine(" UpdateControls : _mSectorsRecordList.Count : " & _mSectorsRecordList.Count)
+    'Console.WriteLine("MATIAS::Sector::UpdateControls - _mActSectorsRegPos : " & _mActSectorsRegPos)
+    'Console.WriteLine("MATIAS::Sector::UpdateControls - _mSectorsRecordList.Count : " & _mSectorsRecordList.Count)
 
     If (_mSectorsRecordList.Count <> 0) Then
       If (IsDBNull(_mSectorsRecordList.Item(_mActSectorsRegPos)("sec_name")) <> True) Then
@@ -91,7 +91,14 @@
 
   Private Sub AddNewRecordToRecordList()
     Dim fields As Hashtable = New Hashtable()
+    Dim itemsCount As Integer = _mSectorsRecordList.Count
+    Dim id As Integer = 1
 
+    If (itemsCount > 0) Then
+      id = _mSectorsRecordList(itemsCount - 1)("id") + 1
+    End If
+
+    fields("id") = id
     fields("sec_name") = txt_name.Text
     fields("hall") = txt_hall.Text
 
@@ -100,15 +107,14 @@
 
   Private Function ValidateInputs() As Boolean
     Dim valid As Boolean = True
-    'Console.WriteLine("------ Sectors: Inside ValidateInputs() ------")
     If _mUtils.CheckExpressionByPatternMatching(txt_name.Text, "^[a-zA-Z]+$") = False Then
-      Console.WriteLine("------ Sectors: Inside ValidateInputs() -> IF 1 ------")
+      'Console.WriteLine("MATIAS::Sectors::ValidateInputs - IF 1 ------")
       MsgBox("Error: Nombre Invalido")
       valid = False
     End If
 
     If _mUtils.CheckExpressionByPatternMatching(txt_hall.Text, "^[0-9]+$") = False Then
-      Console.WriteLine("------ Sectors: Inside ValidateInputs() -> IF 2 ------")
+      'Console.WriteLine("MATIAS::Sectors::ValidateInputs - IF 2 ------")
       MsgBox("Error: Pasillo Invalido")
       valid = False
     End If
@@ -118,7 +124,7 @@
 
   '/-------------------------- EventHandlers Methods --------------------------/
   Private Sub Sectors_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-    Console.WriteLine("Inside of Sectors Form")
+    'Console.WriteLine("MATIAS::Sectors::Load")
     _mSectorsDao = SectorsDao.GetInstance()
     _mUtils = New Utils()
     _mSectorsRecordList = _mSectorsDao.GetRecords()
@@ -134,7 +140,7 @@
     UpdateControls()
   End Sub
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
-    Console.WriteLine("Sectors - I press Exit button")
+    'Console.WriteLine("Sectors - I press Exit button")
     Me.Hide()
     Form1.Show()
     Form1.Focus()

@@ -56,6 +56,7 @@
     ' Buttons Controllers
     btn_next.Enabled = state
     btn_prev.Enabled = state
+    btn_delete.Enabled = state
   End Sub
 
   Private Sub FillProductsDropDownMenu()
@@ -262,8 +263,21 @@
 
     _mUtils = New Utils()
 
-    FillProductsDropDownMenu()
-    FillSectorsDropDownMenu()
+    If (_mProductsRecordList.Count > 0) Then
+      FillProductsDropDownMenu()
+    Else
+      btn_new.Enabled = False
+      btn_delete.Enabled = False
+      MsgBox("Mensaje: Debe Cargar Productos antes de cargar Movimientos.")
+    End If
+
+    If (_mSectorsRecordList.Count > 0) Then
+      FillSectorsDropDownMenu()
+    Else
+      btn_new.Enabled = False
+      btn_delete.Enabled = False
+      MsgBox("Mensaje: Debe Cargar Sectores antes de cargar Movimientos.")
+    End If
 
     UpdateControls()
     UpdateMovementsMenu()

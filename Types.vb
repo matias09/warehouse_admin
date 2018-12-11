@@ -43,8 +43,8 @@
   Private Sub UpdateControls()
     _mUtils.ResetControls(Me)
 
-    Console.WriteLine(" UpdateControls : _mActTypesRegPos : " & _mActTypesRegPos)
-    Console.WriteLine(" UpdateControls : _mTypesRecordList.Count : " & _mTypesRecordList.Count)
+    Console.WriteLine("--MATIAS::Types::UpdateControls - _mActTypesRegPos : " & _mActTypesRegPos)
+    Console.WriteLine("--MATIAS::Types::UpdateControls - _mTypesRecordList.Count : " & _mTypesRecordList.Count)
 
     If (_mTypesRecordList.Count <> 0) Then
       If (IsDBNull(_mTypesRecordList.Item(_mActTypesRegPos)("typ_name")) <> True) Then
@@ -90,7 +90,14 @@
 
   Private Sub AddNewRecordToRecordList()
     Dim fields As Hashtable = New Hashtable()
+    Dim itemsCount As Integer = _mTypesRecordList.Count
+    Dim id As Integer = 1
 
+    If (itemsCount > 0) Then
+      id = _mTypesRecordList(itemsCount - 1)("id") + 1
+    End If
+
+    fields("id") = id
     fields("typ_name") = txt_name.Text
     fields("codint") = txt_codint.Text
 
@@ -101,13 +108,11 @@
     Dim valid As Boolean = True
     'Console.WriteLine("------ Types: Inside ValidateInputs() ------")
     If _mUtils.CheckExpressionByPatternMatching(txt_name.Text, "^[a-zA-Z]+$") = False Then
-      Console.WriteLine("------ Types: Inside ValidateInputs() -> IF 1 ------")
       MsgBox("Error: Nombre Invalido")
       valid = False
     End If
 
     If _mUtils.CheckExpressionByPatternMatching(txt_codint.Text, "[A-Z]{4}-[0-9]{2}\/[A-Z]{1}[0-9]{1}") = False Then
-      Console.WriteLine("------ Types: Inside ValidateInputs() -> IF 2 ------")
       MsgBox("Error: COD INT Invalido")
       valid = False
     End If
@@ -117,7 +122,6 @@
 
   '/-------------------------- EventHandlers Methods --------------------------/
   Private Sub Types_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-    Console.WriteLine("Inside of Types Form")
     _mTypesDao = TypesDao.GetInstance()
     _mUtils = New Utils()
     _mTypesRecordList = _mTypesDao.GetRecords()
@@ -134,7 +138,6 @@
   End Sub
 
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
-    Console.WriteLine("Types - I press Exit button")
     Me.Hide()
     Form1.Show()
     Form1.Focus()
