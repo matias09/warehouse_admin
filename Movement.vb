@@ -8,6 +8,7 @@
   ' Products
   Private _mProductsValues As Dictionary(Of Integer, String)
   Private _mProductsRecordList As ArrayList
+  Private _mProductsBlocked As ArrayList
   Private _mProductsDao As ProductsDao
   Private _mActProductsRegPos As Integer
 
@@ -69,6 +70,11 @@
       Dim i As Integer = 0
 
       While i < recordsCount
+
+        If (_mProductsRecordList.Item(i)("state") = "B") Then
+          _mProductsBlocked.Add(_mProductsRecordList.Item(i)("id"))
+        End If
+
         If (_mProductsValues.ContainsKey(_mProductsRecordList.Item(i)("id")) = False) Then
           _mProductsValues.Add(
             _mProductsRecordList.Item(i)("id"),
@@ -131,6 +137,11 @@
 
        'Console.WriteLine("")
 
+        If (_mProductsBlocked.Contains(p_id) = True) Then
+          SwitchOnOffControlDataButtons(False)
+          btn_next.Enabled = True
+          btn_prev.Enabled = True
+        End If
 
         date_time_picker.Value = _mMovementsRecordList.Item(_mActMovementsRegPos)("mov_date")
         drp_products.SelectedItem = _mProductsValues.Item(p_id)
@@ -243,6 +254,14 @@
       Return False
     End If
 
+    Dim id As Integer = 0
+    id = _mProductsRecordList.Item(drp_products.SelectedIndex)("id")
+
+    If (_mProductsBlocked.Contains(id) = True) Then
+      MsgBox("Error: No se puede modificar el stock de un producto dado de Baja.")
+      Return False
+    End If
+
     Return True
   End Function
 
@@ -257,6 +276,7 @@
   '/-------------------------- EventHandlers Methods --------------------------/
    Private Sub Movements_FormClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.FormClosed
      _mProductsValues.Clear()
+     _mProductsBlocked.Clear()
 
      _mSectorsValues.Clear()
    End Sub
@@ -273,6 +293,7 @@
 
     _mProductsDao = ProductsDao.GetInstance()
     _mProductsValues = New Dictionary(Of Integer, String)
+    _mProductsBlocked = New ArrayList()
     _mProductsRecordList = _mProductsDao.GetRecords()
     _mActProductsRegPos = _mProductsDao.GetRegisterPos()
 
