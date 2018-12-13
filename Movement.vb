@@ -129,14 +129,6 @@
         Dim p_id As Integer = _mMovementsRecordList.Item(_mActMovementsRegPos)("id_product")
         Dim s_id As Integer = _mMovementsRecordList.Item(_mActMovementsRegPos)("id_sector")
 
-       'Console.WriteLine("Movement::UpdateControls - act prod_id : " & p_id)
-       'Console.WriteLine("Movement::UpdateControls - act sector_id : " & s_id)
-
-       'Console.WriteLine("Movement::UpdateControls - act product name : " & _mProductsValues.Item(p_id))
-       'Console.WriteLine("Movement::UpdateControls - act sector name : " & _mSectorsValues.Item(s_id))
-
-       'Console.WriteLine("")
-
         If (_mProductsBlocked.Contains(p_id) = True) Then
           SwitchOnOffControlDataButtons(False)
           btn_next.Enabled = True
@@ -273,6 +265,36 @@
     rad_remove.Checked = False
   End Sub
 
+  Private Sub RunDeleteForAddStock(ByRef id_product As Integer, ByRef id_sector As Integer, ByRef count As Integer, ByRef stock As Integer)
+    If stock = count Then
+      ' Deletes record from Product Sector
+      _mMovementsDao.DeleteProductSectorRowByIds(id_product, id_sector)
+
+      ' Removes the stock amount from Product Table
+      _mMovementsDao.UpdateProductStock((count * (-1)), id_product, id_sector)
+    ElseIf count < stock Then
+      ' Removes the stock amout from Product Sector Table
+      _mMovementsDao.UpdateStockOnProductSectorTable((stock - count), id_product, id_sector)
+
+      ' Removes the stock amout from Product Table
+      _mMovementsDao.UpdateProductStock((count * (-1)), id_product, id_sector)
+    End If
+
+    ' Erase record from DB
+    _mMovementsDao.EraseMovementRecord(drp_movements.SelectedIndex)
+  End Sub
+
+  Private Sub RunDeleteForRemoveStock(ByRef id_product As Integer, ByRef id_sector As Integer, ByRef count As Integer, ByRef stock As Integer)
+    If (stock > 0) Then
+      _mMovementsDao.UpdateStockOnProductSectorTable((stock + count), id_product, id_sector)
+    Else
+      _mMovementsDao.InsertProductSectorRow(count, id_product, id_sector)
+    End If
+
+    ' Adds the stock amount from Product Table
+    _mMovementsDao.UpdateProductStock(count, id_product, id_sector)
+  End Sub
+
   '/-------------------------- EventHandlers Methods --------------------------/
    Private Sub Movements_FormClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.FormClosed
      _mProductsValues.Clear()
@@ -302,8 +324,6 @@
     If (_mProductsRecordList.Count > 0) Then
       FillProductsDropDownMenu()
     Else
-      btn_new.Enabled = False
-      btn_delete.Enabled = False
       MsgBox("Mensaje: Debe Cargar Productos antes de cargar Movimientos.")
       Me.Close()
       Form1.Show()
@@ -311,13 +331,12 @@
     End If
 
     If (_mSectorsRecordList.Count > 0) Then
+      Console.WriteLine("Fill Sector Dropdown")
       FillSectorsDropDownMenu()
 
       UpdateControls()
       UpdateMovementsMenu()
     Else
-      btn_new.Enabled = False
-      btn_delete.Enabled = False
       MsgBox("Mensaje: Debe Cargar Sectores antes de cargar Movimientos.")
       Me.Close()
       Form1.Show()
@@ -369,22 +388,11 @@
     ' Checks stock count
     Dim stock As Integer = _mMovementsDao.GetProductSectorStock(id_product, id_sector)
 
-    If stock = count Then
-      ' Deletes record from Product Sector
-      _mMovementsDao.DeleteProductSectorRowByIds(id_product, id_sector)
-
-      ' Removes the stock amount from Product Table
-      _mMovementsDao.UpdateProductStock((count * (-1)), id_product, id_sector)
-    ElseIf count < stock Then
-      ' Removes the stock amout from Product Sector Table
-      _mMovementsDao.UpdateStockOnProductSectorTable((stock - count), id_product, id_sector)
-
-      ' Removes the stock amout from Product Table
-      _mMovementsDao.UpdateProductStock((count * (-1)), id_product, id_sector)
+    If _mMovementsRecordList.Item(_mActMovementsRegPos)("operation") = "A" Then
+      RunDeleteForAddStock(id_product, id_sector, count, stock)
+    Else
+      RunDeleteForRemoveStock(id_product, id_sector, count, stock)
     End If
-
-    ' Erase record from DB
-    _mMovementsDao.EraseMovementRecord(drp_movements.SelectedIndex)
 
     ' updates controls
     _mMovementsRecordList.RemoveAt(drp_movements.SelectedIndex)

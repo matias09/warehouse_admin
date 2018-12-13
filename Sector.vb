@@ -210,13 +210,13 @@
   End Sub
 
   Private Sub btn_delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_delete.Click
-    Dim hasRelations As Boolean = False
+    Dim hasConstraints As Boolean = False
     Dim id As Integer = _mSectorsRecordList.Item(_mActSectorsRegPos)("id")
 
     ' Validation against database
-    canDelete = _mSectorsDao.HasProductsRelations(id)
+    hasConstraints = _mSectorsDao.HasConstraints(id)
 
-    If (hasRelations = False) Then
+    If (hasConstraints = False) Then
       _mSectorsDao.SetRegisterPos(_mActSectorsRegPos)
       _mSectorsRecordList.RemoveAt(_mActSectorsRegPos)
 
@@ -232,6 +232,8 @@
 
       UpdateControls()
       UpdateSectorsMenu()
+    Else
+      MsgBox("Error: No puede eliminar un Sector cuando el mismo ya se encuentra asosciado a un Producto.")
     End If
   End Sub
 

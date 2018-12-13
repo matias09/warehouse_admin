@@ -202,15 +202,15 @@
   End Sub
 
   Private Sub btn_delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_delete.Click
-    Dim hasRelations As Boolean = False
+    Dim hasConstraints As Boolean = False
     Dim id As Integer = _mTypesRecordList.Item(_mActTypesRegPos)("id")
 
     ' Validation against database
-    hasRelations = _mTypesDao.HasProductsRelations(id)
+    hasConstraints = _mTypesDao.HasConstraints(id)
 
     'Console.WriteLine("-- MATIAS::Types::btn_delete_Click -- hasRelations")
 
-    If (hasRelations = False) Then
+    If (hasConstraints = False) Then
       _mTypesDao.SetRegisterPos(_mActTypesRegPos)
       _mTypesRecordList.RemoveAt(_mActTypesRegPos)
 
@@ -226,6 +226,8 @@
 
       UpdateControls()
       UpdateTypesMenu()
+    Else
+      MsgBox("Error: No puede eliminar un Tipo de Producto cuando el mismo ya se encuentra asosciado a un Producto.")
     End If
   End Sub
 

@@ -79,7 +79,7 @@
     registerPos = newRegisterPos
   End Sub
 
-  Public Function HasProductsRelations(ByRef id As Integer) As Boolean
+  Public Function HasConstraints(ByRef id As Integer) As Boolean
     Dim sql As String
     Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
     Dim rd As OleDb.OleDbDataReader = Nothing
