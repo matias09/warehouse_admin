@@ -22,7 +22,6 @@ Partial Class Types
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-    Me.btn_clean = New System.Windows.Forms.Button()
     Me.btn_update = New System.Windows.Forms.Button()
     Me.btn_prev = New System.Windows.Forms.Button()
     Me.btn_next = New System.Windows.Forms.Button()
@@ -37,16 +36,8 @@ Partial Class Types
     Me.btn_save = New System.Windows.Forms.Button()
     Me.btn_cancel = New System.Windows.Forms.Button()
     Me.Label2 = New System.Windows.Forms.Label()
+    Me.btn_delete = New System.Windows.Forms.Button()
     Me.SuspendLayout()
-    '
-    'btn_clean
-    '
-    Me.btn_clean.Location = New System.Drawing.Point(98, 173)
-    Me.btn_clean.Name = "btn_clean"
-    Me.btn_clean.Size = New System.Drawing.Size(75, 23)
-    Me.btn_clean.TabIndex = 8
-    Me.btn_clean.Text = "Limpiar"
-    Me.btn_clean.UseVisualStyleBackColor = True
     '
     'btn_update
     '
@@ -176,11 +167,21 @@ Partial Class Types
     Me.Label2.TabIndex = 91
     Me.Label2.Text = "Formato: XXXX-99/X9"
     '
+    'btn_delete
+    '
+    Me.btn_delete.Location = New System.Drawing.Point(98, 173)
+    Me.btn_delete.Name = "btn_delete"
+    Me.btn_delete.Size = New System.Drawing.Size(75, 23)
+    Me.btn_delete.TabIndex = 92
+    Me.btn_delete.Text = "Eliminar"
+    Me.btn_delete.UseVisualStyleBackColor = True
+    '
     'Types
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
     Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
     Me.ClientSize = New System.Drawing.Size(284, 203)
+    Me.Controls.Add(Me.btn_delete)
     Me.Controls.Add(Me.Label2)
     Me.Controls.Add(Me.btn_cancel)
     Me.Controls.Add(Me.btn_save)
@@ -190,7 +191,6 @@ Partial Class Types
     Me.Controls.Add(Me.Label6)
     Me.Controls.Add(Me.txt_name)
     Me.Controls.Add(Me.Label1)
-    Me.Controls.Add(Me.btn_clean)
     Me.Controls.Add(Me.btn_update)
     Me.Controls.Add(Me.btn_prev)
     Me.Controls.Add(Me.btn_next)
@@ -202,7 +202,6 @@ Partial Class Types
     Me.PerformLayout()
 
 End Sub
-    Friend WithEvents btn_clean As System.Windows.Forms.Button
     Friend WithEvents btn_update As System.Windows.Forms.Button
     Friend WithEvents btn_prev As System.Windows.Forms.Button
     Friend WithEvents btn_next As System.Windows.Forms.Button
@@ -217,4 +216,5 @@ End Sub
   Friend WithEvents btn_save As System.Windows.Forms.Button
   Friend WithEvents btn_cancel As System.Windows.Forms.Button
   Friend WithEvents Label2 As System.Windows.Forms.Label
+  Friend WithEvents btn_delete As System.Windows.Forms.Button
 End Class

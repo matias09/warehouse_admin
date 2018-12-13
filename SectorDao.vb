@@ -1,5 +1,7 @@
 ﻿Public NotInheritable Class SectorsDao
   Const TABLE_NAME As String = "sectors"
+  Const TABLE_NAME_PROD_SECTORS As String = "prod_sectors"
+
   Private recordList As ArrayList
   Private fieldsList As Hashtable
   Private dataBaseManager As DataBaseManager
@@ -92,6 +94,23 @@
   Public Sub SetRegisterPos(ByVal newRegisterPos As Integer)
     registerPos = newRegisterPos
   End Sub
+
+  Public Function HasProductsRelations(ByRef id As Integer) As Boolean
+    Dim sql As String
+    Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
+    Dim rd As OleDb.OleDbDataReader = Nothing
+
+    sql = "SELECT id FROM " + TABLE_NAME_PROD_SECTORS +
+          " WHERE id_sector = @id_sector"
+
+    Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
+    cd.Parameters.Add("@id_sector", OleDb.OleDbType.Integer).Value = id
+
+    rd = cd.ExecuteReader()
+
+    cd.Dispose()
+    Return rd.HasRows
+  End Function
 
   ' Privates
   Private Sub SaveDataInRecord()

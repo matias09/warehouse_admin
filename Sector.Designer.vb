@@ -28,7 +28,7 @@ Partial Class Sector
     Me.Label6 = New System.Windows.Forms.Label()
     Me.txt_name = New System.Windows.Forms.TextBox()
     Me.Label1 = New System.Windows.Forms.Label()
-    Me.btn_clean = New System.Windows.Forms.Button()
+    Me.btn_delete = New System.Windows.Forms.Button()
     Me.btn_update = New System.Windows.Forms.Button()
     Me.btn_new = New System.Windows.Forms.Button()
     Me.btn_exit = New System.Windows.Forms.Button()
@@ -90,14 +90,14 @@ Partial Class Sector
     Me.Label1.TabIndex = 98
     Me.Label1.Text = "Nombre:"
     '
-    'btn_clean
+    'btn_delete
     '
-    Me.btn_clean.Location = New System.Drawing.Point(104, 162)
-    Me.btn_clean.Name = "btn_clean"
-    Me.btn_clean.Size = New System.Drawing.Size(75, 23)
-    Me.btn_clean.TabIndex = 15
-    Me.btn_clean.Text = "Limpiar"
-    Me.btn_clean.UseVisualStyleBackColor = True
+    Me.btn_delete.Location = New System.Drawing.Point(104, 162)
+    Me.btn_delete.Name = "btn_delete"
+    Me.btn_delete.Size = New System.Drawing.Size(75, 23)
+    Me.btn_delete.TabIndex = 15
+    Me.btn_delete.Text = "Eliminar"
+    Me.btn_delete.UseVisualStyleBackColor = True
     '
     'btn_update
     '
@@ -181,7 +181,7 @@ Partial Class Sector
     Me.Controls.Add(Me.Label6)
     Me.Controls.Add(Me.txt_name)
     Me.Controls.Add(Me.Label1)
-    Me.Controls.Add(Me.btn_clean)
+    Me.Controls.Add(Me.btn_delete)
     Me.Controls.Add(Me.btn_update)
     Me.Controls.Add(Me.btn_new)
     Me.Controls.Add(Me.btn_exit)
@@ -197,7 +197,7 @@ End Sub
   Friend WithEvents Label6 As System.Windows.Forms.Label
   Friend WithEvents txt_name As System.Windows.Forms.TextBox
   Friend WithEvents Label1 As System.Windows.Forms.Label
-  Friend WithEvents btn_clean As System.Windows.Forms.Button
+  Friend WithEvents btn_delete As System.Windows.Forms.Button
   Friend WithEvents btn_update As System.Windows.Forms.Button
   Friend WithEvents btn_new As System.Windows.Forms.Button
   Friend WithEvents btn_exit As System.Windows.Forms.Button

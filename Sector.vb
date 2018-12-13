@@ -28,11 +28,12 @@
     drp_sectors.Enabled = state
 
     ' Buttons Controllers
-    btn_clean.Enabled = state
+    btn_delete.Enabled = state
     btn_next.Enabled = state
     btn_prev.Enabled = state
 
     btn_update.Enabled = state
+    btn_delete.Enabled = state
   End Sub
 
   Private Sub SwitchOnOffInputControls(ByVal state As Boolean)
@@ -146,7 +147,7 @@
     Form1.Focus()
   End Sub
 
-  Private Sub btn_clean_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_clean.Click
+  Private Sub btn_clean_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_delete.Click
     _mUtils.ResetControls(Me)
   End Sub
 
@@ -207,4 +208,31 @@
     _mActSectorsRegPos = _mUtils.UpdateRegisterPos(futRegPos, eleRecordsCount)
     drp_sectors.SelectedIndex = _mActSectorsRegPos
   End Sub
+
+  Private Sub btn_delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_delete.Click
+    Dim hasRelations As Boolean = False
+    Dim id As Integer = _mSectorsRecordList.Item(_mActSectorsRegPos)("id")
+
+    ' Validation against database
+    canDelete = _mSectorsDao.HasProductsRelations(id)
+
+    If (hasRelations = False) Then
+      _mSectorsDao.SetRegisterPos(_mActSectorsRegPos)
+      _mSectorsRecordList.RemoveAt(_mActSectorsRegPos)
+
+      drp_sectors.Items.RemoveAt(_mActSectorsRegPos)
+      _mSectorsDao.EraseRecord()
+
+      If _mActSectorsRegPos = _mSectorsRecordList.Count Then
+        _mActSectorsRegPos -= 1
+      End If
+
+      ' Back To Normal Menu Behavior
+      SwitchOnOffControlDataButtons(True)
+
+      UpdateControls()
+      UpdateSectorsMenu()
+    End If
+  End Sub
+
 End Class

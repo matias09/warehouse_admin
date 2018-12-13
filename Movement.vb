@@ -123,6 +123,15 @@
         Dim p_id As Integer = _mMovementsRecordList.Item(_mActMovementsRegPos)("id_product")
         Dim s_id As Integer = _mMovementsRecordList.Item(_mActMovementsRegPos)("id_sector")
 
+       'Console.WriteLine("Movement::UpdateControls - act prod_id : " & p_id)
+       'Console.WriteLine("Movement::UpdateControls - act sector_id : " & s_id)
+
+       'Console.WriteLine("Movement::UpdateControls - act product name : " & _mProductsValues.Item(p_id))
+       'Console.WriteLine("Movement::UpdateControls - act sector name : " & _mSectorsValues.Item(s_id))
+
+       'Console.WriteLine("")
+
+
         date_time_picker.Value = _mMovementsRecordList.Item(_mActMovementsRegPos)("mov_date")
         drp_products.SelectedItem = _mProductsValues.Item(p_id)
         drp_sectors.SelectedItem = _mSectorsValues.Item(s_id)
@@ -246,6 +255,12 @@
   End Sub
 
   '/-------------------------- EventHandlers Methods --------------------------/
+   Private Sub Movements_FormClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.FormClosed
+     _mProductsValues.Clear()
+
+     _mSectorsValues.Clear()
+   End Sub
+
   Private Sub Movements_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
     _mMovementsDao = MovementDao.GetInstance()
     _mMovementsRecordList = _mMovementsDao.GetRecords()
@@ -269,18 +284,24 @@
       btn_new.Enabled = False
       btn_delete.Enabled = False
       MsgBox("Mensaje: Debe Cargar Productos antes de cargar Movimientos.")
+      Me.Close()
+      Form1.Show()
+      Form1.Focus()
     End If
 
     If (_mSectorsRecordList.Count > 0) Then
       FillSectorsDropDownMenu()
+
+      UpdateControls()
+      UpdateMovementsMenu()
     Else
       btn_new.Enabled = False
       btn_delete.Enabled = False
       MsgBox("Mensaje: Debe Cargar Sectores antes de cargar Movimientos.")
+      Me.Close()
+      Form1.Show()
+      Form1.Focus()
     End If
-
-    UpdateControls()
-    UpdateMovementsMenu()
   End Sub
 
   Private Sub drp_movements_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles drp_movements.SelectedIndexChanged
@@ -296,7 +317,8 @@
 
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
     'Console.WriteLine("Movements - I press Exit button")
-    Me.Hide()
+    'Me.Hide()
+    Me.Close()
     Form1.Show()
     Form1.Focus()
   End Sub

@@ -1,5 +1,7 @@
 ﻿Public NotInheritable Class TypesDao
   Const TABLE_NAME As String = "types"
+  Const TABLE_NAME_PRODUCTS As String = "products"
+
   Private recordList As ArrayList
   Private fieldsList As Hashtable
   Private dataBaseManager As DataBaseManager
@@ -76,6 +78,23 @@
   Public Sub SetRegisterPos(ByVal newRegisterPos As Integer)
     registerPos = newRegisterPos
   End Sub
+
+  Public Function HasProductsRelations(ByRef id As Integer) As Boolean
+    Dim sql As String
+    Dim dbConn As OleDb.OleDbConnection = dataBaseManager.GetConnectionInstance()
+    Dim rd As OleDb.OleDbDataReader = Nothing
+
+    sql = "SELECT id FROM " + TABLE_NAME_PRODUCTS +
+          " WHERE id_type = @id_type"
+
+    Dim cd As OleDb.OleDbCommand = New OleDb.OleDbCommand(sql, dbConn)
+    cd.Parameters.Add("@id_type", OleDb.OleDbType.Integer).Value = id
+
+    rd = cd.ExecuteReader()
+
+    cd.Dispose()
+    Return rd.HasRows
+  End Function
 
   ' Privates
   Private Sub FillRecordList()

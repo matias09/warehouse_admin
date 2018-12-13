@@ -28,11 +28,11 @@
     drp_types.Enabled = state
 
     ' Buttons Controllers
-    btn_clean.Enabled = state
     btn_next.Enabled = state
     btn_prev.Enabled = state
 
     btn_update.Enabled = state
+    btn_delete.Enabled = state
   End Sub
 
   Private Sub SwitchOnOffInputControls(ByVal state As Boolean)
@@ -143,10 +143,6 @@
     Form1.Focus()
   End Sub
 
-  Private Sub btn_clean_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_clean.Click
-    _mUtils.ResetControls(Me)
-  End Sub
-
   Private Sub btn_update_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_update.Click
     If ValidateInputs() = True Then
 
@@ -204,4 +200,33 @@
     _mActTypesRegPos = _mUtils.UpdateRegisterPos(futRegPos, eleRecordsCount)
     drp_types.SelectedIndex = _mActTypesRegPos
   End Sub
+
+  Private Sub btn_delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_delete.Click
+    Dim hasRelations As Boolean = False
+    Dim id As Integer = _mTypesRecordList.Item(_mActTypesRegPos)("id")
+
+    ' Validation against database
+    hasRelations = _mTypesDao.HasProductsRelations(id)
+
+    'Console.WriteLine("-- MATIAS::Types::btn_delete_Click -- hasRelations")
+
+    If (hasRelations = False) Then
+      _mTypesDao.SetRegisterPos(_mActTypesRegPos)
+      _mTypesRecordList.RemoveAt(_mActTypesRegPos)
+
+      drp_types.Items.RemoveAt(_mActTypesRegPos)
+      _mTypesDao.EraseRecord()
+
+      If _mActTypesRegPos = _mTypesRecordList.Count Then
+        _mActTypesRegPos -= 1
+      End If
+
+      ' Back To Normal Menu Behavior
+      SwitchOnOffControlDataButtons(True)
+
+      UpdateControls()
+      UpdateTypesMenu()
+    End If
+  End Sub
+
 End Class
