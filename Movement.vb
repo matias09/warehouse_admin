@@ -77,7 +77,6 @@
         End If
 
         drp_products.Items.Add(_mProductsRecordList.Item(i)("pro_name"))
-
         i += 1
       End While
 
@@ -124,6 +123,15 @@
         Dim p_id As Integer = _mMovementsRecordList.Item(_mActMovementsRegPos)("id_product")
         Dim s_id As Integer = _mMovementsRecordList.Item(_mActMovementsRegPos)("id_sector")
 
+       'Console.WriteLine("Movement::UpdateControls - act prod_id : " & p_id)
+       'Console.WriteLine("Movement::UpdateControls - act sector_id : " & s_id)
+
+       'Console.WriteLine("Movement::UpdateControls - act product name : " & _mProductsValues.Item(p_id))
+       'Console.WriteLine("Movement::UpdateControls - act sector name : " & _mSectorsValues.Item(s_id))
+
+       'Console.WriteLine("")
+
+
         date_time_picker.Value = _mMovementsRecordList.Item(_mActMovementsRegPos)("mov_date")
         drp_products.SelectedItem = _mProductsValues.Item(p_id)
         drp_sectors.SelectedItem = _mSectorsValues.Item(s_id)
@@ -143,38 +151,15 @@
   End Sub
 
   Private Sub UpdateMovementsMenu()
-    Dim found As Boolean = False
-    Dim state As String = "A"
-    Dim j As Integer = 0
-    Dim p_recordsCount As Integer = 0
-    Dim p_id As Integer = 0
-
     Dim i As Integer = 0
     Dim recordsCount As Integer = 0
 
     drp_movements.Items.Clear()
     recordsCount = _mMovementsRecordList.Count
-    p_recordsCount = _mProductsRecordList.Count
 
     If recordsCount <> 0 Then
       While i < recordsCount
-        p_id = _mMovementsRecordList.Item(i)("id_product")
-
-        While j < p_recordsCount And found = False
-          If (p_id = _mProductsRecordList.Item(j)("id")) Then
-            state = _mProductsRecordList.Item(j)("state")
-            found = True
-          End If
-
-          j += 1
-        End While
-
-        If (state = "A") Then
-          drp_movements.Items.Add(_mMovementsRecordList.Item(i)("id"))
-        End If
-        found = False
-        j = 0
-
+        drp_movements.Items.Add(_mMovementsRecordList.Item(i)("id"))
         i += 1
       End While
       drp_movements.SelectedIndex = _mActMovementsRegPos
@@ -331,6 +316,8 @@
   End Sub
 
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
+    'Console.WriteLine("Movements - I press Exit button")
+    'Me.Hide()
     Me.Close()
     Form1.Show()
     Form1.Focus()
@@ -407,7 +394,7 @@
 
   Private Sub btn_next_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_next.Click
     Dim futRegPos As Integer = 0
-    Dim eleRecordsCount As Integer = drp_movements.Items.Count
+    Dim eleRecordsCount As Integer = _mMovementsRecordList.Count
 
     futRegPos = _mActMovementsRegPos + 1
     _mActMovementsRegPos = _mUtils.UpdateRegisterPos(futRegPos, eleRecordsCount)
