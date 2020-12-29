@@ -64,7 +64,6 @@
     Dim recordsCount As Integer = 0
 
     recordsCount = _mProductsRecordList.Count
-    'Console.WriteLine("records count : " & recordsCount)
 
     If recordsCount <> 0 Then
       Dim i As Integer = 0
@@ -86,7 +85,6 @@
         i += 1
       End While
 
-      'Console.WriteLine("Movement::FillProductsDropDownMenu - Filltype reg pos : " & _mActProductsRegPos)
       drp_products.SelectedIndex = _mActProductsRegPos
     Else
       drp_products.Enabled = False
@@ -228,21 +226,19 @@
         _mMovementsDao.InsertNewRecord(fields)
         _mMovementsRecordList.Add(fields)
       Else
-        MsgBox("ERROR: La cantidad de Stock, supera la cantidad del sector.")
+        MsgBox("ERROR: The amount of Stock is higher than the Sector availability.")
       End If
     End If
   End Sub
 
   Private Function ValidateInputs() As Boolean
     If _mUtils.CheckExpressionByPatternMatching(txt_count.Text, "^[0-9]+$") = False Then
-     ' Console.WriteLine("------ Movements: Inside ValidateInputs() -> IF 1 ------")
-      MsgBox("Error: El Stock contiene caracteres invalidos")
+      MsgBox("Error: The Sector name contains invalid characters")
       Return False
     End If
 
     If txt_count.Text < 1 Then
-     ' Console.WriteLine("------ Movements: Inside ValidateInputs() -> IF 1 ------")
-      MsgBox("Error: La cantidad de Stock es nula")
+      MsgBox("Error: The amount of Stock is NULL")
       Return False
     End If
 
@@ -250,7 +246,7 @@
     id = _mProductsRecordList.Item(drp_products.SelectedIndex)("id")
 
     If (_mProductsBlocked.Contains(id) = True) Then
-      MsgBox("Error: No se puede modificar el stock de un producto dado de Baja.")
+      MsgBox("Error: The Stock of a product cancelled, can't be modified.")
       Return False
     End If
 
@@ -324,20 +320,19 @@
     If (_mProductsRecordList.Count > 0) Then
       FillProductsDropDownMenu()
     Else
-      MsgBox("Mensaje: Debe Cargar Productos antes de cargar Movimientos.")
+      MsgBox("Message: Products Must be loaded first before Movements.")
       Me.Close()
       Form1.Show()
       Form1.Focus()
     End If
 
     If (_mSectorsRecordList.Count > 0) Then
-      Console.WriteLine("Fill Sector Dropdown")
       FillSectorsDropDownMenu()
 
       UpdateControls()
       UpdateMovementsMenu()
     Else
-      MsgBox("Mensaje: Debe Cargar Sectores antes de cargar Movimientos.")
+      MsgBox("Message: Sectors Must be loaded first before Movements.")
       Me.Close()
       Form1.Show()
       Form1.Focus()
@@ -356,8 +351,6 @@
   End Sub
 
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
-    'Console.WriteLine("Movements - I press Exit button")
-    'Me.Hide()
     Me.Close()
     Form1.Show()
     Form1.Focus()

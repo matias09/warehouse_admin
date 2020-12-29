@@ -4,8 +4,8 @@
   Const STATE_AVAILABLE As Char = "A"
   Const STATE_DISABLE As Char = "B"
 
-  Const TYPE_TITLE_LABEL_TEXT_ON_IDLE_STATE As String = "Tipo:"
-  Const TYPE_TITLE_LABEL_TEXT_ON_NEW_STATE As String = "Elegir Tipo:"
+  Const TYPE_TITLE_LABEL_TEXT_ON_IDLE_STATE As String = "Type:"
+  Const TYPE_TITLE_LABEL_TEXT_ON_NEW_STATE As String = "Choose Type:"
 
   Private _mProductsRecordList As ArrayList
   Private _mProductsDao As ProductsDao
@@ -89,8 +89,6 @@
         i += 1
       End While
 
-
-      'Console.WriteLine("Product::FillTypesDropDownMenu - Filltype reg pos : " & _mActTypesRegPos)
       drp_types.SelectedIndex = _mActTypesRegPos
     Else
       drp_types.Enabled = False
@@ -176,8 +174,7 @@
 
   Private Function ValidateInputs() As Boolean
     If _mUtils.CheckExpressionByPatternMatching(txt_name.Text, "^[a-zA-Z]+$") = False Then
-      Console.WriteLine("------ Products: Inside ValidateInputs() -> IF 1 ------")
-      MsgBox("Error: Nombre Invalido")
+      MsgBox("Error: Invalid Name")
       Return False
     End If
 
@@ -225,7 +222,7 @@
     Else
       btn_new.Enabled = False
       btn_update.Enabled = False
-      MsgBox("Mensaje: Debe Cargar Tipo de Productos antes de cargar Productos.")
+      MsgBox("Message: Product Types Must be loaded first before Products.")
     End If
 
     UpdateControls()
@@ -244,7 +241,6 @@
   End Sub
 
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
-    'Console.WriteLine("Products - I press Exit button")
     Me.Hide()
     Form1.Show()
     Form1.Focus()

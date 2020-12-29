@@ -44,9 +44,6 @@
   Private Sub UpdateControls()
     _mUtils.ResetControls(Me)
 
-    'Console.WriteLine("MATIAS::Sector::UpdateControls - _mActSectorsRegPos : " & _mActSectorsRegPos)
-    'Console.WriteLine("MATIAS::Sector::UpdateControls - _mSectorsRecordList.Count : " & _mSectorsRecordList.Count)
-
     If (_mSectorsRecordList.Count <> 0) Then
       If (IsDBNull(_mSectorsRecordList.Item(_mActSectorsRegPos)("sec_name")) <> True) Then
         txt_name.Text = _mSectorsRecordList.Item(_mActSectorsRegPos)("sec_name")
@@ -109,14 +106,12 @@
   Private Function ValidateInputs() As Boolean
     Dim valid As Boolean = True
     If _mUtils.CheckExpressionByPatternMatching(txt_name.Text, "^[a-zA-Z]+$") = False Then
-      'Console.WriteLine("MATIAS::Sectors::ValidateInputs - IF 1 ------")
-      MsgBox("Error: Nombre Invalido")
+      MsgBox("Error: Invalid Name")
       valid = False
     End If
 
     If _mUtils.CheckExpressionByPatternMatching(txt_hall.Text, "^[0-9]+$") = False Then
-      'Console.WriteLine("MATIAS::Sectors::ValidateInputs - IF 2 ------")
-      MsgBox("Error: Pasillo Invalido")
+      MsgBox("Error: Invalid Warehouse Row")
       valid = False
     End If
 
@@ -125,7 +120,6 @@
 
   '/-------------------------- EventHandlers Methods --------------------------/
   Private Sub Sectors_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-    'Console.WriteLine("MATIAS::Sectors::Load")
     _mSectorsDao = SectorsDao.GetInstance()
     _mUtils = New Utils()
     _mSectorsRecordList = _mSectorsDao.GetRecords()
@@ -141,7 +135,6 @@
     UpdateControls()
   End Sub
   Private Sub btn_exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_exit.Click
-    'Console.WriteLine("Sectors - I press Exit button")
     Me.Hide()
     Form1.Show()
     Form1.Focus()
@@ -233,7 +226,7 @@
       UpdateControls()
       UpdateSectorsMenu()
     Else
-      MsgBox("Error: No puede eliminar un Sector cuando el mismo ya se encuentra asosciado a un Producto.")
+      MsgBox("Error: Can't erase a Sector currently related to a Product.")
     End If
   End Sub
 

@@ -18,7 +18,6 @@
     Dim database_path As String
     database_path = Application.StartupPath
 
-'Console.WriteLine("DATABASE Initialized - Using this path: " & database_path)
     dbConn = New OleDb.OleDbConnection("Provider=Microsoft.JET.OLEDB.4.0;Data Source=" & database_path & "\" & DATABASE_NAME)
     dbConn.Open()
   End Sub

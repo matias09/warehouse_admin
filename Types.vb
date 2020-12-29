@@ -43,9 +43,6 @@
   Private Sub UpdateControls()
     _mUtils.ResetControls(Me)
 
-    Console.WriteLine("--MATIAS::Types::UpdateControls - _mActTypesRegPos : " & _mActTypesRegPos)
-    Console.WriteLine("--MATIAS::Types::UpdateControls - _mTypesRecordList.Count : " & _mTypesRecordList.Count)
-
     If (_mTypesRecordList.Count <> 0) Then
       If (IsDBNull(_mTypesRecordList.Item(_mActTypesRegPos)("typ_name")) <> True) Then
         txt_name.Text = _mTypesRecordList.Item(_mActTypesRegPos)("typ_name")
@@ -106,14 +103,14 @@
 
   Private Function ValidateInputs() As Boolean
     Dim valid As Boolean = True
-    'Console.WriteLine("------ Types: Inside ValidateInputs() ------")
+
     If _mUtils.CheckExpressionByPatternMatching(txt_name.Text, "^[a-zA-Z]+$") = False Then
-      MsgBox("Error: Nombre Invalido")
+      MsgBox("Error: Invalid Name")
       valid = False
     End If
 
     If _mUtils.CheckExpressionByPatternMatching(txt_codint.Text, "[A-Z]{4}-[0-9]{2}\/[A-Z]{1}[0-9]{1}") = False Then
-      MsgBox("Error: COD INT Invalido")
+      MsgBox("Error: Invalid Internal Code")
       valid = False
     End If
 
@@ -208,8 +205,6 @@
     ' Validation against database
     hasConstraints = _mTypesDao.HasConstraints(id)
 
-    'Console.WriteLine("-- MATIAS::Types::btn_delete_Click -- hasRelations")
-
     If (hasConstraints = False) Then
       _mTypesDao.SetRegisterPos(_mActTypesRegPos)
       _mTypesRecordList.RemoveAt(_mActTypesRegPos)
@@ -227,7 +222,7 @@
       UpdateControls()
       UpdateTypesMenu()
     Else
-      MsgBox("Error: No puede eliminar un Tipo de Producto cuando el mismo ya se encuentra asosciado a un Producto.")
+      MsgBox("Error: Can't erase a Product Type currently related to a Product.")
     End If
   End Sub
 

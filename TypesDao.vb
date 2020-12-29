@@ -42,15 +42,11 @@
   End Sub
 
   Public Sub SaveRecord(ByVal isNewRecord As Boolean)
-    Console.WriteLine(" Save Record : register pos : " & registerPos)
-
     If isNewRecord = True Then
       dr = dt.NewRow()
       dt.Rows.Add(dr)
       registerPos = dt.Rows.Count - 1
     End If
-
-    Console.WriteLine(" Save Record 2 : register pos : " & registerPos)
 
     dr = dt.Rows(registerPos)
     SaveDataInRecord()
@@ -117,11 +113,8 @@
     Dim i As Integer = 0
     Dim fieldsCount As Integer = 0
 
-    Console.WriteLine(" Save Data in Record : register pos : " & registerPos)
-
     fieldsCount = fieldsList.Count
     While i < fieldsCount
-      Console.WriteLine("Element - " & recordList.Item(registerPos)(fieldsList.Keys(i)))
       dr(fieldsList.Keys(i)) = recordList.Item(registerPos)(fieldsList.Keys(i))
       i += 1
     End While
